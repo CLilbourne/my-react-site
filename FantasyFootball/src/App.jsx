@@ -11,6 +11,7 @@ import AboutMe from './AboutMe'
 function App() {
   return (
     <div className='page-container'>
+      <title>HireConnor.org</title>
       <Header />
       <BrowserRouter>
         <Routes>
