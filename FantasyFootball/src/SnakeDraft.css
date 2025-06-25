@@ -1,0 +1,87 @@
+.DraftVisual {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start; /* ensures spacing between teams */
+  gap: .1rem;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(21, 23, 44);
+  border: 1.5px solid rgb(0, 0, 0);
+  box-shadow: rgb(3, 6, 23) 2px 2px 10px;
+  overflow-x: auto;
+  text-align: left;
+}
+.DraftVisual > div { /* each team container */
+  flex: 1 1;
+  min-width: 100px;   /* optional min size */
+  max-width: 250px;   /* optional max size */
+}
+
+.text-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 35px; /* Add padding to avoid image overlap */
+  color: black;
+  height: 100%;
+  
+}
+
+.pick-slot {
+  position: relative;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 35px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.player-name {
+  font-weight:bold;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+}
+
+.player-position {
+  font-size: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+}
+
+.snakeImg {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+}
+.TeamTitleSnake {
+  background-color: rgb(22, 34, 56);
+  padding: 5px;
+  border: solid black 1px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  font-size: 14PX;
+  
+  display: flex;
+  flex-direction: column;  /* stack vertically */
+  align-items: center;     /* center horizontally */
+  gap: 5px;                /* space between icon and text */
+}
+.icon{
+  width: 50px;
+}

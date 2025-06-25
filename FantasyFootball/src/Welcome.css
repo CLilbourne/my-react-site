@@ -1,0 +1,12 @@
+ .welcomebuttons{
+  background: linear-gradient(90deg, rgb(22, 34, 56), rgb(21, 23, 44));
+  border: none;
+  color: white;
+  padding: 20px 40px;
+  margin-left: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 50px;
+  transition: background-color 0.2s ease;
+  }

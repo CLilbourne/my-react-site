@@ -1,0 +1,33 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  background-color: rgb(3, 6, 23);
+  background-size: cover;
+  
+  
+}
+
+.main-content{
+  flex: 1;
+  margin-top: 82px;
+  user-select: none;    /* Disables text selection */
+}
+
+.page-container {
+  min-height: 100vh; /* at least full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1;
+}
+
+ul {
+  list-style-type: none;  /* removes bullets */
+  padding-left: 0;        
+  margin-left: 0;       
+}
+button {
+  user-select: none;    /* Disables text selection */
+}
