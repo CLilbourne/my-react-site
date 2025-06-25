@@ -8,10 +8,10 @@ function Header() {
         <h1 className="header-title">HireConnor.org</h1>
       </div>
       <nav className="header-nav">
-        <a href="login">Login</a>
-        <a href="#">League</a>
-        <a href="#">Stats</a>
-        <a href="#">Settings</a>
+        <a href="login">Login (Server not Live ATM)</a>
+        <a href="register">Register (Server not Live ATM)</a>
+        <a href="AboutMe">About Me</a>
+        <a href="#">Settings (Server not Live ATM)</a>
       </nav>
     </header>
   );
