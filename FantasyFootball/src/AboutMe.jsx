@@ -169,7 +169,7 @@ function AboutMe() {
         </div>
         <h2>Resume</h2>
         <p>
-            <a href="Connor_Resume.pdf" target="_blank">My Resume</a>
+            <a href="AboutMeImgs/Connor_Resume.pdf" target="_blank">My Resume</a>
         </p>
         <h4>Citation</h4>
         <p>
