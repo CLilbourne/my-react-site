@@ -5,7 +5,8 @@ import SignUp from './SignUp';
 import Login from './Login';
 import Draft from './Draft';
 import Welcome from './Welcome';
-import MockDraft from './MockDraft'
+import MockDraft from './MockDraft';
+import AboutMe from './AboutMe'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path='/register' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
+          <Route path = '/AboutMe' element= {<AboutMe/>}/>
           <Route
             path='/draft'
             element={
