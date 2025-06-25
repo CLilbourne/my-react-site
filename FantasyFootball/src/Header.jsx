@@ -8,7 +8,7 @@ function Header() {
         <h1 className="header-title">HireConnor.org</h1>
       </div>
       <nav className="header-nav">
-        <a href="login">My Team</a>
+        <a href="login">Login</a>
         <a href="#">League</a>
         <a href="#">Stats</a>
         <a href="#">Settings</a>
