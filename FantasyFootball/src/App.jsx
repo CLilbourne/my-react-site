@@ -11,6 +11,7 @@ function App() {
   return (
     <div className='page-container'>
       <Header />
+      <p>yo test tes</p>
       <BrowserRouter>
         <Routes>
           <Route path='/register' element={<SignUp />} />
