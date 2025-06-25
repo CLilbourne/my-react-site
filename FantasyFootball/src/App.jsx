@@ -11,7 +11,6 @@ function App() {
   return (
     <div className='page-container'>
       <Header />
-      <p style={{fontSize: 500}}>yo test tes</p>
       <BrowserRouter>
         <Routes>
           <Route path='/register' element={<SignUp />} />
