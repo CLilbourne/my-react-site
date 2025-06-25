@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://hireconnor.org",
+  "homepage": "https://Clilbourne.github.io/my-react-site",
  "scripts": {
   "dev": "vite",
   "build": "vite build",
