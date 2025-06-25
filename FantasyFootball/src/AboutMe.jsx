@@ -154,6 +154,13 @@ function AboutMe() {
             <td></td>
             <td>team creation stats api, leagues and invites</td>
             </tr>
+            <tr>
+            <td>2025-06-25</td>
+            <td>Launch my React Website on Github Pages</td>
+            <td></td>
+            <td></td>
+            <td>Make About Me Section Good, launch React Website on Another Live Server that supports node js</td>
+            </tr>
         </table>
         <h2> Things to learn</h2>
         <div>
