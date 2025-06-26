@@ -37,13 +37,13 @@
 }
 
 .project-card h3 {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
 .project-category {
   display: block;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #93c5fd;
   margin-bottom: 0.5rem;
 }
@@ -71,4 +71,5 @@
 .project-card li {
   margin-bottom: 0.5rem;
   line-height: 1.4;
+  font-size: 0.8rem;
 }
