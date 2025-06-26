@@ -1,0 +1,39 @@
+
+
+.work-item {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-left: 4px solid #382fb3; /* Tailwind's teal-300 */
+  background-color: #111122;
+  border-radius: 6px;
+}
+
+.work-item h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #e0f2fe; /* Light blue */
+  margin-bottom: 0.3rem;
+  
+}
+
+.work-item p.date {
+  font-size: 1rem;
+  color: #93c5fd; /* Soft blue */
+  margin-bottom: 0.5rem;
+}
+
+.work-item ul {
+  padding-left: 1.5rem;
+  list-style-type: disc;
+  line-height: 1.6;
+}
+
+.work-item li {
+  margin-bottom: 0.4rem;
+  color: #dbeafe; /* Blue-100 */
+}
+.work-item:hover {
+  background-color: #1e293b;
+  transform: scale(1.01);
+  transition: 0.2s ease-in-out;
+}

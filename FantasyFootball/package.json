@@ -4,21 +4,23 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://hireconnor.org/",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build && powershell Copy-Item -Path dist/index.html -Destination dist/404.html",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && powershell Copy-Item -Path dist/index.html -Destination dist/404.html",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.511.0",
     "mongodb": "^6.17.0",
     "node-fetch": "^3.3.2",
+    "ogl": "^1.0.11",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

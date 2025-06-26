@@ -6,7 +6,7 @@ import Login from './Login';
 import Draft from './Draft';
 import Welcome from './Welcome';
 import MockDraft from './MockDraft';
-import AboutMe from './AboutMe'
+import AboutMe from './AboutMe/AboutMe'
 
 function App() {
   return (
