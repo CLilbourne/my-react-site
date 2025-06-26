@@ -11,7 +11,7 @@ import grad from  "../assets/AboutMeIMGS/Grad1.png"
 function AboutMe() {
 
   return (
-    <div style={{ marginTop: 90, marginLeft: 20}}>
+    <div style={{ marginTop: 100, marginLeft: 20}}>
       <section className="about" id="about">
       <div className="about-container">
       <div className="about-content">
@@ -42,7 +42,7 @@ function AboutMe() {
 </div>
     </section>
       <section className="px-4 py-12 max-w-4xl mx-auto">
-      <h2 style={{fontSize: 50, textAlign: 'center', userSelect: 'none'}}>Work Experience</h2>
+      <h2 style={{fontSize: 40, textAlign: 'center', userSelect: 'none'}}>Work Experience</h2>
 
       <WorkExperienceItem
         title="Data Analyst (Full-Time)"
@@ -103,9 +103,9 @@ function AboutMe() {
       />
     </section>
     <Projects/>
-    <h2 style={{fontSize: 50, textAlign: 'center',userSelect: 'none'}}>Skills</h2>
+    <h2 style={{fontSize: 40, textAlign: 'center',userSelect: 'none'}}>Skills</h2>
     <Skills/>
-    <h2 style={{fontSize: 50, textAlign: 'center',userSelect: 'none'}}>Hobbies</h2>
+    <h2 style={{fontSize: 40, textAlign: 'center',userSelect: 'none'}}>Hobbies</h2>
         <div style={{ height: '600px', position: 'relative' }}>
         <CircularGallery bend={0} textColor="#ffffff" borderRadius={0.05} />
         </div>

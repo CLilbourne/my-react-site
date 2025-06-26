@@ -7,10 +7,11 @@
   color: #f0f0f0;
   background-color: #111122;
   user-select: none;
+  border-radius: 20px;
 }
 
 .section-title {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
   text-align: center;
   margin-bottom: 2rem;
@@ -37,13 +38,13 @@
 }
 
 .project-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
 
 .project-category {
   display: block;
-  font-size: 1rem;
+  font-size: .85rem;
   color: #93c5fd;
   margin-bottom: 0.5rem;
 }
@@ -59,7 +60,7 @@
   background-color: #334155;
   padding: 0.3rem 0.6rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: #f1f5f9;
 }
 
@@ -71,5 +72,5 @@
 .project-card li {
   margin-bottom: 0.5rem;
   line-height: 1.4;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
