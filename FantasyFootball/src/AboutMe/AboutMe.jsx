@@ -6,15 +6,41 @@ import WorkExperienceItem from './WorkExperienceItem';
 import CircularGallery from "../GSAP/CircularGallery";
 import Projects from "./Projects";
 import Skills from "./skills";
+import grad from  "../assets/AboutMeIMGS/Grad1.png"
 
 function AboutMe() {
-  
-const handleAnimationComplete = () => {
-  console.log('All letters have animated!');
-};
+
   return (
     <div style={{ marginTop: 90, marginLeft: 20}}>
-      
+      <section className="about" id="about">
+      <div className="about-container">
+      <div className="about-content">
+        <div className="about-text">
+          <h1>Hello, I'm Connor <span className="wave">👋</span></h1>
+          <p>
+            I'm a recent graduate from Laurier with an Honours BSC in Computer Science with minors in Math and Environmental Studies.
+          </p>
+          <p>
+            I have a passion for data analysis and software engineering.
+            I'm currently seeking opportunities where I can contribute and grow as a
+            Software Developer or Data Analyst. 
+          </p>
+          <p>
+            This website serves as both my interactive resume and a space for experimenting with
+            projects including a fantasy football application I'm building from scratch.
+          </p>
+          <p>
+            Feel free to explore, and scroll down or click to view my  
+            <a style={{fontWeight:'bold'}} href="/AboutMeImgs/Connor_Resume.pdf" target="_blank" rel="noopener noreferrer"> resume</a>.
+          </p>
+        </div>
+
+      <div className="about-image">
+        <img style={{ width: 180, borderRadius: 12 }} src={grad} alt="Connor Graduation" />
+      </div>
+  </div>
+</div>
+    </section>
       <section className="px-4 py-12 max-w-4xl mx-auto">
       <h2 style={{fontSize: 50, textAlign: 'center', userSelect: 'none'}}>Work Experience</h2>
 
