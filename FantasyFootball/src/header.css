@@ -1,6 +1,6 @@
 
 .header {
-   background-color: rgb(21, 23, 44);
+  background-color: rgb(21, 23, 44);
   color: white;
   padding: 12px;
   display: flex;
@@ -29,18 +29,19 @@
   padding-left: 30px;
   letter-spacing: 0.5px;
   white-space: nowrap;
+  padding: 10px;
 }
 
 .header-nav {
   display: flex;
   gap: 24px;
-  font-size: 20px;
+  font-size: 14px;
   font-weight: bold;
   font-weight: 500;
   padding-right: 50px;
 }
 
-.header-nav a {
+a {
   color: white;
   text-decoration: none;
   transition: color 0.2s ease;
