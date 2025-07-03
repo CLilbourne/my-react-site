@@ -4,13 +4,11 @@ html, body, #root {
   font-family: 'Nunito', sans-serif;
   background-color: rgb(3, 6, 23);
   background-size: cover;
-  
-  
 }
 
 .main-content{
   flex: 1;
-  margin-top: 82px;
+  margin-top: 46px;
   user-select: none;    /* Disables text selection */
 }
 

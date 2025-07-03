@@ -5,7 +5,7 @@
   gap: .1rem;
   padding: 10px;
   border-radius: 10px;
-  background-color: rgb(21, 23, 44);
+  background-color:  rgb(22, 34, 56);
   border: 1.5px solid rgb(0, 0, 0);
   box-shadow: rgb(3, 6, 23) 2px 2px 10px;
   overflow-x: auto;
@@ -29,15 +29,18 @@
 
 .pick-slot {
   position: relative;
-  padding: 5px;
+  padding: 5px 8px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 35px;
-  border: 1px solid #000;
+  min-height: 35px;
+  flex-shrink: 0;
+  border: 1px solid rgb(38, 47, 66);
+  background-color: rgb(41, 53, 78);
   border-radius: 10px;
   margin-bottom: 2px;
   overflow: hidden;
+  box-sizing: border-box;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -65,11 +68,14 @@
   right: 5px;
 }
 .TeamTitleSnake {
-  background-color: rgb(22, 34, 56);
-  padding: 5px;
-  border: solid black 1px;
+  background-color: rgb(37, 52, 82);
+  padding: 2px;
+  border: solid rgb(42, 55, 82);
+  border-width: 1px;
+
   border-radius: 10px;
   margin-bottom: 5px;
+
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: center;

@@ -7,10 +7,12 @@ function PlayerItem({ player, buttonLabel, onButtonClick }) {
       <img
         src={player.headshot}
         alt={player.fullName}
-        style={{ width: 80, height: 58 }}
       />
       <div>
-        {player.fullName} ({player.position}) - {player.team}
+        <span style={{ fontWeight: "bold" }}>{player.fullName}</span>{" "}
+        <span style={{ color: "#bbb", fontSize: "0.9em" }}>
+          ({player.position}) - {player.team}
+        </span>
       </div>
       {buttonLabel && onButtonClick && (
         <button onClick={() => onButtonClick(player)} style={{ marginLeft: "auto" }}>

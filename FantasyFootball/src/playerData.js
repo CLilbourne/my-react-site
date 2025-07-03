@@ -6,7 +6,7 @@ export const positionColors = {
     wr: '#6277e9',
     te: '#e7e962',
     def: '#ddb66d',
-    k: '#e186e4',
+    pk: '#9d7ecb',
     };
 
 export const teamAbbreviations = {

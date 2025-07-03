@@ -31,11 +31,11 @@ export default function SnakeDraft({ draftedPlayers, numTeams }) {
           <div className="TeamTitleSnake"><img style={{ width: 30, height: 30}} src={reactIcon} alt="icon" />Team {i + 1}</div>
           
           <div className="SnakeCard">
-            {[...Array(12)].map((_, index) => {
+            {[...Array(15)].map((_, index) => {
               const player = team[index]; // get player at pick index, if any
               const globalPickNumber = i + 1  + index * 12;
               return (
-                <li key={index} className="pick-slot" style={{backgroundColor: player? positionColors[player.position.toLowerCase()]|| 'black' : 'inherit'}}>
+                <div key={index} className="pick-slot" style={{backgroundColor: player? positionColors[player.position.toLowerCase()]|| 'black' : '#29354e;'}}>
                   {player ? (
                     <div className="text-info">
                     
@@ -49,7 +49,7 @@ export default function SnakeDraft({ draftedPlayers, numTeams }) {
                   ) : (
                     <span style={{ color: "white", fontWeight: "Bold"}}>Pick {globalPickNumber}</span>
                   )}
-                </li>
+                </div>
               );
             })}
           </div>

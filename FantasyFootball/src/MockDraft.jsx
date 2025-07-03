@@ -2,12 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import PlayerItem from "./PlayerItem";
 import SnakeDraft from "./SnakeDraft";
 import adpData from "./assets/adp.json";
+import mockdraft from "./assets/mockdraft.png"
 
 // Timer durations in seconds
 const USER_TIMER_DURATION = 30;
 const AI_TIMER_DURATION = 0;
 const NUM_TEAMS = 12;
-const TOTAL_ROUNDS = 12;
+const TOTAL_ROUNDS = 15;
+
 
 // Utility to normalize player names for matching
 function normalizeName(name) {
@@ -188,14 +190,8 @@ draftPlayer(playerToDraft);
   return (
     <div>
       <div style={{ marginBottom: "1rem" }}>
-        <SnakeDraft draftedPlayers={draftedPlayers} draftOrder={draftPickOrder} numTeams={NUM_TEAMS} />
         <h3 style={{ color: "white" }}>⏱️ Time remaining: {timer ?? "-" }s</h3>
-        {!draftComplete && (
-          <p style={{ color: "white" }}>Current Pick: Team {draftPickOrder[currentPickIndex] + 1}</p>
-        )}
-        {draftComplete && <p style={{ color: "lightgreen" }}>Draft Complete!</p>}
-
-        <label style={{ color: "white" }}>
+         <label style={{ color: "white" }}>
           Select your team slot:{" "}
           <select
             value={selectedTeam}
@@ -209,13 +205,29 @@ draftPlayer(playerToDraft);
             ))}
           </select>
         </label>
+        <SnakeDraft draftedPlayers={draftedPlayers} draftOrder={draftPickOrder} numTeams={NUM_TEAMS} />
+        {draftComplete && <p style={{ color: "lightgreen" }}>Draft Complete!</p>}
+
       </div>
 
       <div style={{ display: "flex", gap: 40 }}>
+
         <div className="draftPlayers" style={{ flex: 1 }}>
-          <h3 style={{ color: "white" }}>Available Players</h3>
-          {availablePlayers.length === 0 && <p>No players left!</p>}
-          <ul style={{ maxHeight: 500, overflowY: "auto", padding: 0 }}>
+
+          {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
+          {availablePlayers.length === 0 && <img src={mockdraft}></img>}
+          <input type="text" placeholder="Search by name..." ></input>
+           <select>
+            <option value="">All Positions</option>
+            <option value="QB">QB</option>
+            <option value="RB">RB</option>
+            <option value="WR">WR</option>
+            <option value="TE">TE</option>
+            <option value="DEF">DEF</option>
+            <option value="K">K</option>
+          </select>
+          
+          <ul style={{overflowY: "auto", padding: 0}}>
             {availablePlayers.map((player) =>
               draftPickOrder[currentPickIndex] === selectedTeam ? (
                 <PlayerItem
