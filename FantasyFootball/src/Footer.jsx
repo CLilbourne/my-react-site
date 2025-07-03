@@ -6,10 +6,10 @@ export default function Footer() {
     <footer className="footer">
       <p>© 2025 Connor Lilbourne. All rights reserved.</p>
       <nav className="footer-nav">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Contact</a>
-        <a href="#">About Me</a>
+        <a href="#">#</a>
+        <a href="#">#</a>
+        <a href="#">Contact(unfinished)</a>
+        <a href="AboutMe">About Me</a>
       </nav>
     </footer>
   );
