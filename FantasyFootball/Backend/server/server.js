@@ -92,9 +92,10 @@ async function startServer() {
 });
 
     // Server start
-    app.listen(3001, () => {
-      console.log('Server is running on port 3001');
-    });
+    const PORT = process.env.PORT || 3001;
+const HOST = '0.0.0.0';
+
+app.listen(PORT, HOST, () => console.log(`Server is running on http://${HOST}:${PORT}`));
 
   } catch (err) {
     console.error('Failed to start server:', err);
