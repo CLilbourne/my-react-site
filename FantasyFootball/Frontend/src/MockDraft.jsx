@@ -35,7 +35,7 @@ export default function Draft() {
 
   // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
-    fetch("${BACKEND_URL}/NflPlayers")
+    fetch(`${BACKEND_URL}/NflPlayers`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
