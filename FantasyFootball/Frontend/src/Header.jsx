@@ -1,5 +1,5 @@
 
-import "./Header.css"; // Make sure this file exists
+import "./header.css"; // Make sure this file exists
 
 function Header() {
   return (
