@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css"; // reuse same styles
 import { useNavigate } from "react-router-dom";
+import "./shared.jsx"
 
 function Login() {
   const [form, setForm] = useState({
@@ -22,7 +23,7 @@ function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:3001/login", {
+      const res = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: form.email, password: form.password }),
