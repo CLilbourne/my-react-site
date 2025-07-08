@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css"; // reuse same styles
 import { useNavigate } from "react-router-dom";
-import "./shared.jsx"
+import { BACKEND_URL } from "./shared"
 
 function Login() {
   const [form, setForm] = useState({

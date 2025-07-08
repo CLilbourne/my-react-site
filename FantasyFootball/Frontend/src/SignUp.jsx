@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./signup.css";
-import "./shared.jsx"
+import { BACKEND_URL } from "./shared"
 
 function SignUp() {
   const [form, setForm] = useState({
