@@ -8,15 +8,10 @@ dotenv.config({ path: './a.env' });
 const app = express();
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || origin.startsWith("http://localhost:")) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: true,
   credentials: true
 }));
+
 app.use(express.json());
 
 const client = new MongoClient(process.env.ATLAS_URI);
