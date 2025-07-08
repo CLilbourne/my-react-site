@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./signup.css";
+import "./shared.jsx"
 
 function SignUp() {
   const [form, setForm] = useState({
