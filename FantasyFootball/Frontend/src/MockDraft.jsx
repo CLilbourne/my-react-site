@@ -3,7 +3,7 @@ import PlayerItem from "./PlayerItem";
 import SnakeDraft from "./SnakeDraft";
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://my-react-site-production.up.railway.app';
 // Timer durations in seconds
 const USER_TIMER_DURATION = 30;
 const AI_TIMER_DURATION = 0;
@@ -35,7 +35,7 @@ export default function Draft() {
 
   // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
-    fetch("http://localhost:3001/NflPlayers")
+    fetch("${BACKEND_URL}/NflPlayers")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
