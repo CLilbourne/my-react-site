@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./SignUp.css"; // reuse same styles
+import "./signup.css"; // reuse same styles
 import { useNavigate } from "react-router-dom";
 
 function Login() {
