@@ -4,7 +4,6 @@ import SnakeDraft from "./SnakeDraft";
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://my-react-site-production.up.railway.app';
 // Timer durations in seconds
 const USER_TIMER_DURATION = 30;
 const AI_TIMER_DURATION = 0;
