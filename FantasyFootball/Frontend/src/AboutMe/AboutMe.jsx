@@ -31,7 +31,7 @@ function AboutMe() {
           </p>
           <p>
             Feel free to explore, and scroll down or click to view my  
-            <a style={{fontWeight:'bold'}} href="/AboutMeImgs/Connor_Resume_Optimized(2025)" target="_blank" rel="noopener noreferrer"> resume</a>.
+            <a style={{fontWeight:'bold'}} href="/AboutMeImgs/Connor_Resume_Optimized" target="_blank" rel="noopener noreferrer"> resume</a>.
           </p>
         </div>
 
