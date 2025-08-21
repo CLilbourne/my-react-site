@@ -165,7 +165,8 @@ function Ranking() {
               <PlayerItem
                 key={player.id}
                 player={player}
-                index={index + 1} // global rank in filtered list
+                // ✅ find the player's position in the full list (not just filtered)
+                index={availablePlayers.findIndex((p) => p.id === player.id) + 1}
                 positionalRank={player.positionRank}
                 primaryButton={{
                   label: "Up",
@@ -176,6 +177,7 @@ function Ranking() {
                   onClick: () => movePlayerDown(player),
                 }}
               />
+
             ))}
           </ul>
         </div>
