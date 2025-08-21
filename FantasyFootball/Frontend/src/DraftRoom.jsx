@@ -80,7 +80,7 @@ function DraftRoom() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
 
-        <select value={filterPos} onChange={(e) => setFilterPos(e.target.value)}>
+        <select  className="position-select" value={filterPos} onChange={(e) => setFilterPos(e.target.value)}>
           <option value="ALL">All Positions</option>
           <option value="QB">QB</option>
           <option value="RB">RB</option>
