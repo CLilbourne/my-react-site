@@ -6,6 +6,7 @@ import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
 
 function Ranking() {
+  const username = location.state?.username;
   const [availablePlayers, setAvailablePlayers] = useState([]);
 
   // Fetch players + merge ADP, sort by ADP
