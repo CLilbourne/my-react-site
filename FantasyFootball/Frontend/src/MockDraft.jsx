@@ -218,7 +218,7 @@ draftPlayer(playerToDraft);
               draftPickOrder[currentPickIndex] === selectedTeam ? (
                 <PlayerItem
                   key={player.id}
-                  index = ""
+                  index = {null}
                   player={player}
                   primaryButton={{
                    label: "Draft",
@@ -240,7 +240,7 @@ draftPlayer(playerToDraft);
                 {team.map((player) => (
                   <PlayerItem
                     key={player.id}
-                    index = ""
+                    index = {null}
                     player={player}
                      primaryButton={{
                    label: "Drop",
