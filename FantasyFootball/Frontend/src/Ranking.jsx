@@ -1,77 +1,74 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PlayerItem from "./PlayerItem";
-import { Draggable } from "gsap/Draggable";
-import gsap from "gsap";
 
-function Ranking({ availablePlayers }) {
-  const containerRef = useRef(null);
-  const [sortables, setSortables] = useState([]);
+import adpData from "./assets/adp.json";
+import mockdraft from "./assets/mockdraft.png"
+import { BACKEND_URL } from "./shared"
+import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
+import normalizeName from "./helpers"
 
+
+function Ranking() {
+   // State declarations
+  const [availablePlayers, setAvailablePlayers] = useState([]);
+  const [teams, setTeams] = useState(Array.from({ length: NUM_TEAMS }, () => []));
+  const [draftedPlayers, setDraftedPlayers] = useState([]);
+  const [draftPickOrder, setDraftPickOrder] = useState([]);
+  const [currentPickIndex, setCurrentPickIndex] = useState(0);
+  const [timer, setTimer] = useState(null);
+  const [selectedTeam, setSelectedTeam] = useState(0);
+
+
+  // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
-    if (!availablePlayers.length) return;
+    fetch(`${BACKEND_URL}/NflPlayers`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const merged = data.map((player) => {
+          const normalizedPlayerName = normalizeName(player.fullName);
+          const adpMatch = adpData.find(
+            (adp) => normalizeName(adp.Player) === normalizedPlayerName
+          );
+          return {
+            ...player,
+            adp: adpMatch ? parseFloat(adpMatch["AVG"]) : Infinity,
+          };
+        });
+        merged.sort((a, b) => a.adp - b.adp);
+        setAvailablePlayers(merged);
+      })
+      .catch(console.error);
+  }, []);
 
-    const rowSize = 130;
-    const colSize = 300; // width of player row
-    const cells = availablePlayers.map((_, index) => ({
-      index,
-      x: 0,
-      y: index * rowSize,
-    }));
-
-    const container = containerRef.current;
-    const newSortables = Array.from(container.children).map((el, index) => {
-      const sortable = {
-        element: el,
-        index,
-        cell: cells[index],
-        setIndex: function (i) {
-          this.index = i;
-          this.cell = cells[i];
-          gsap.to(this.element, { x: this.cell.x, y: this.cell.y, duration: 0.3 });
-        },
-      };
-
-      Draggable.create(el, {
-        type: "y",
-        bounds: container,
-        onDrag: function () {
-          const newIndex = Math.round(this.y / rowSize);
-          if (newIndex !== sortable.index && newIndex >= 0 && newIndex < availablePlayers.length) {
-            const temp = newSortables[newIndex];
-            newSortables[newIndex] = sortable;
-            newSortables[sortable.index] = temp;
-            newSortables.forEach((s, i) => s.setIndex(i));
-          }
-        },
-      });
-
-      gsap.set(el, { x: sortable.cell.x, y: sortable.cell.y });
-      return sortable;
-    });
-
-    setSortables(newSortables);
-  }, [availablePlayers]);
 
   return (
-    <div
-      className="player-grid"
-      ref={containerRef}
-      style={{ position: "relative", height: availablePlayers.length * 130 }}
-    >
-      {availablePlayers.map((player, index) => (
-        <div
-          key={player.id}
-          className="player-item"
-          style={{
-            position: "absolute",
-            width: "280px",
-            height: "120px",
-            margin: "5px",
-          }}
-        >
-          <PlayerItem player={player} />
+    <div>
+      <div style={{ display: "flex", gap: 40 }}>
+
+        <div className="draftPlayers" style={{ flex: 1 }}>
+
+          {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
+          {availablePlayers.length === 0 && <img src={mockdraft}></img>}
+          
+          <ul style={{overflowY: "auto", padding: 0}}>
+            {availablePlayers.map((player) =>
+              draftPickOrder[currentPickIndex] === selectedTeam ? (
+                <PlayerItem
+                  key={player.id}
+                  player={player}
+                  buttonLabel="Draft"
+                  onButtonClick={() => draftPlayer(player)}
+                />
+              ) : (
+                <PlayerItem key={player.id} player={player} />
+              )
+            )}
+          </ul>
         </div>
-      ))}
+      </div>
     </div>
   );
 }
