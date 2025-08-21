@@ -3,7 +3,7 @@ import "./Draft.css";
 import {positionColors} from "./playerData";
 
 function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
-  let background = rgb(28, 43, 70);
+  let background = "#4c09e7ff"
   if (status === "gone") background = "#ffcccc"; // light red
   if (status === "got") background = "#ccffcc"; // light green
   return (
