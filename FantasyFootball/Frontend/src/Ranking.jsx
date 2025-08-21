@@ -4,7 +4,7 @@ import SnakeDraft from "./SnakeDraft";
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
-
+import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
 function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
