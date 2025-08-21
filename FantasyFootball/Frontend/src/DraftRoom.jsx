@@ -91,7 +91,7 @@ function DraftRoom() {
 
       {/* Player List */}
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {filteredPlayers.map((player) => (
+        {filteredPlayers.map((player, index) => (
           <PlayerItem
             key={player.id}
             index={index + 1} // global rank
