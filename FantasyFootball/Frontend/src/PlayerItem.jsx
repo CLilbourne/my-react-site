@@ -4,8 +4,8 @@ import {positionColors} from "./playerData";
 
 function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
   let background = "rgb(28, 43, 70)"
-  if (status === "gone") background = "#ffcccc"; // light red
-  if (status === "got") background = "#ccffcc"; // light green
+  if (status === "gone") background = "#ff5353ff"; // light red
+  if (status === "got") background = "#5bfa5bff"; // light green
   return (
     <li
       className="player-card"
