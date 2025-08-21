@@ -49,11 +49,9 @@ function Ranking() {
         const savedRankings = await savedRes.json();
 
         if (savedRankings.length > 0) {
-          // Reorder players based on saved rankings (IDs in order)
           const rankedPlayers = savedRankings
             .map((id) => merged.find((p) => p.id === id))
             .filter(Boolean);
-          // Add any new players not in saved list
           const remaining = merged.filter(
             (p) => !savedRankings.includes(p.id)
           );
@@ -89,7 +87,7 @@ function Ranking() {
         newPlayers[index],
         newPlayers[index - 1],
       ];
-      saveRankings(newPlayers); // ✅ persist change
+      saveRankings(newPlayers);
       return newPlayers;
     });
   };
@@ -103,10 +101,23 @@ function Ranking() {
         newPlayers[index],
         newPlayers[index + 1],
       ];
-      saveRankings(newPlayers); // ✅ persist change
+      saveRankings(newPlayers);
       return newPlayers;
     });
   };
+
+  // ✅ Compute positional ranks dynamically
+  const getPlayersWithPositionalRanks = () => {
+    const positionCounters = {}; // e.g. { WR: 1, RB: 1 }
+    return availablePlayers.map((player) => {
+      const pos = player.position;
+      if (!positionCounters[pos]) positionCounters[pos] = 1;
+      const rank = positionCounters[pos]++;
+      return { ...player, positionRank: `${pos}${rank}` };
+    });
+  };
+
+  const playersWithRanks = getPlayersWithPositionalRanks();
 
   return (
     <div>
@@ -114,14 +125,15 @@ function Ranking() {
       <div style={{ marginBottom: "1rem" }}></div>
       <div style={{ display: "flex", gap: 40 }}>
         <div className="draftPlayers" style={{ flex: 1 }}>
-          {availablePlayers.length === 0 && <p>Loading players...</p>}
+          {playersWithRanks.length === 0 && <p>Loading players...</p>}
 
           <ul style={{ overflowY: "auto", padding: 0 }}>
-            {availablePlayers.map((player, index) => (
+            {playersWithRanks.map((player, index) => (
               <PlayerItem
                 key={player.id}
                 player={player}
-                index={index + 1}
+                index={index + 1} // global rank
+                positionalRank={player.positionRank} // ✅ new prop
                 primaryButton={{
                   label: "Up",
                   onClick: () => movePlayerUp(player),
