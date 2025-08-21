@@ -8,7 +8,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton }) {
       style={{ display: "flex", alignItems: "center", gap: "10px" }}
     >
       {/* Number before the photo */}
-      {index !== undefined && index !== null && (
+       {typeof index === "number" && (
         <span style={{ width: "30px", fontWeight: "bold", textAlign: "center" }}>
           {index}.
         </span>
