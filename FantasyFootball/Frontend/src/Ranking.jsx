@@ -1,7 +1,7 @@
 
 import PlayerItem from "./PlayerItem";
 function Ranking() {
-  <ul style={{ padding: 0 }}>
+  return(<ul style={{ padding: 0 }}>
                 {team.map((player) => (
                   <PlayerItem
                     key={player.id}
@@ -10,6 +10,6 @@ function Ranking() {
                     onButtonClick={() => {}}
                   />
                 ))}
-</ul>
+</ul>)
 }
 export default Ranking;
