@@ -55,55 +55,43 @@ function Ranking() {
         {availablePlayers.length === 0 && <img src={mockdraft} alt="mockdraft" />}
 
         <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="players">
-            {(provided) => (
+  <Droppable droppableId="players">
+    {(provided) => (
+      <div
+        {...provided.droppableProps}
+        ref={provided.innerRef}
+        style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+      >
+        {availablePlayers.map((player, index) => (
+          <Draggable
+            key={player.id ?? index}
+            draggableId={String(player.id ?? index)}
+            index={index}
+          >
+            {(provided, snapshot) => (
               <div
-                {...provided.droppableProps}
                 ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
                 style={{
-                  maxHeight: "70vh",
-                  overflowY: "auto",
-                  background: "#f8f9fa",
                   padding: "8px",
-                  borderRadius: "8px",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  background: snapshot.isDragging ? "#eee" : "#fff",
+                  ...provided.draggableProps.style,
                 }}
               >
-                {availablePlayers.map((player, index) => (
-                  <Draggable key={player.id} draggableId={String(player.id)} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          userSelect: "none",
-                          margin: "0 0 8px 0",
-                          borderRadius: "6px",
-                          background: snapshot.isDragging ? "#e2e6ea" : "#fff",
-                          boxShadow: snapshot.isDragging
-                            ? "0 4px 8px rgba(0,0,0,0.1)"
-                            : "0 1px 2px rgba(0,0,0,0.05)",
-                          ...provided.draggableProps.style,
-                        }}
-                      >
-                        {draftPickOrder[currentPickIndex] === selectedTeam ? (
-                          <PlayerItem
-                            player={player}
-                            buttonLabel="Draft"
-                            onButtonClick={() => draftPlayer(player)}
-                          />
-                        ) : (
-                          <PlayerItem player={player} />
-                        )}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+                {player.fullName}
               </div>
             )}
-          </Droppable>
-        </DragDropContext>
+          </Draggable>
+        ))}
+        {provided.placeholder}
+      </div>
+    )}
+  </Droppable>
+</DragDropContext>
+
       </div>
     </div>
   );
