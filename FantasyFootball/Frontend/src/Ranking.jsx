@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PlayerItem from "./PlayerItem";
 
 import adpData from "./assets/adp.json";
-import mockdraft from "./assets/mockdraft.png"
-import { BACKEND_URL } from "./shared"
-import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
-import normalizeName from "./helpers"
-
+import { BACKEND_URL } from "./shared";
+import normalizeName from "./helpers";
 
 function Ranking() {
-   // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
-  
+
   // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
     fetch(`${BACKEND_URL}/NflPlayers`)
@@ -36,26 +32,35 @@ function Ranking() {
       .catch(console.error);
   }, []);
 
+  // Function to move a player up in the list
+  const movePlayerUp = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index <= 0) return prevPlayers; // Can't move up the first player
+      const newPlayers = [...prevPlayers];
+      // Swap with the player above
+      [newPlayers[index - 1], newPlayers[index]] = [newPlayers[index], newPlayers[index - 1]];
+      return newPlayers;
+    });
+  };
 
   return (
     <div>
       <div style={{ display: "flex", gap: 40 }}>
-
         <div className="draftPlayers" style={{ flex: 1 }}>
+          {availablePlayers.length === 0 && <p>Server Down</p>}
 
-          {availablePlayers.length === 0 && <p> Server Down</p>}
-          
-          <ul style={{overflowY: "auto", padding: 0}}>
-            {availablePlayers.map((player) =>
-                <PlayerItem
-                  key={player.id}
-                  player={player}
-                  buttonLabel="Up"
-                  onButtonClick={() => draftPlayer(player)
-                    }
-                    
-                />
-            )}
+          <ul style={{ overflowY: "auto", padding: 0 }}>
+            {availablePlayers.map((player) => (
+              <PlayerItem
+                key={player.id}
+                player={player}
+                primaryButton={{
+                  label: "Up",
+                  onClick: () => movePlayerUp(player),
+                }}
+              />
+            ))}
           </ul>
         </div>
       </div>

@@ -241,7 +241,7 @@ draftPlayer(playerToDraft);
                     key={player.id}
                     player={player}
                      primaryButton={{
-                   label: "drop",
+                   label: "Drop",
                    onClick: () => {}}}
                 />
 
