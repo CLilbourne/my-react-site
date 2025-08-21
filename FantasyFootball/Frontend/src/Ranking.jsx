@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
-import "./DraftRoom"
+import "./DraftRoom.css"
 
 function Ranking() {
   const location = useLocation();
