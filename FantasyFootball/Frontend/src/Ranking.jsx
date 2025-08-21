@@ -44,6 +44,16 @@ function Ranking() {
     });
   };
 
+   const movePlayerDown = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index <= 0) return prevPlayers; // Can't move up the first player
+      const newPlayers = [...prevPlayers];
+      // Swap with the player above
+      [newPlayers[index + 1], newPlayers[index]] = [newPlayers[index], newPlayers[index + 1]];
+      return newPlayers;
+    });
+  };
   return (
     <div>
       <div style={{ display: "flex", gap: 40 }}>
@@ -58,6 +68,10 @@ function Ranking() {
                 primaryButton={{
                   label: "Up",
                   onClick: () => movePlayerUp(player),
+                }}
+                secondaryButton={{
+                  label: "Down",
+                  onClick: () => movePlayerDown(player),
                 }}
               />
             ))}
