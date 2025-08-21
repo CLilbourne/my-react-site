@@ -24,6 +24,14 @@ function Ranking() {
   }, [username, navigate]);
   if (!username) return null;
 
+      const [searchTerm, setSearchTerm] = useState("");
+      const [filterPos, setFilterPos] = useState("ALL");
+      const filteredPlayers = players.filter((p) => {
+      const matchesSearch = p.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesPos = filterPos === "ALL" || p.position === filterPos;
+      return matchesSearch && matchesPos;
+      });
+
   // ✅ Load players, then fetch saved rankings if any
   useEffect(() => {
     async function fetchPlayers() {
@@ -145,7 +153,7 @@ function Ranking() {
           {playersWithRanks.length === 0 && <p>Loading players...</p>}
 
           <ul style={{ overflowY: "auto", padding: 0 }}>
-            {playersWithRanks.map((player, index) => (
+            {filteredPlayers.map((player, index) => (
               <PlayerItem
                 key={player.id}
                 player={player}
