@@ -29,7 +29,7 @@ function Header() {
       <nav className="header-nav">
         {username ? (
           <div className="header-nav-items">
-            <Link to="/mock-draft">Mock Draft</Link>
+            <Link to="/mock-draft">Mock aDraft</Link>
             <Link to="/welcome">{username.toUpperCase()}</Link>
             <button className="logout-btn" onClick={handleLogout}>
               Logout
