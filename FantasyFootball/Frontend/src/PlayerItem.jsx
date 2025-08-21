@@ -3,12 +3,13 @@ import "./Draft.css";
 import {positionColors} from "./playerData";
 
 function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
+  let background = rgb(28, 43, 70);
   if (status === "gone") background = "#ffcccc"; // light red
   if (status === "got") background = "#ccffcc"; // light green
   return (
     <li
       className="player-card"
-      style={{ display: "flex", alignItems: "center", gap: "10px" }}
+      style={{ display: "flex", alignItems: "center", gap: "10px", background}}
     >
       {/* Global rank number before the photo */}
       {typeof index === "number" && (
