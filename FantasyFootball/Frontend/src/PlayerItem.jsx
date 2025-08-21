@@ -1,17 +1,9 @@
 import React from "react";
 import "./Draft.css"; // Optional styles
 
-function PlayerItem({ player, index, primaryButton, secondaryButton }) {
+function PlayerItem({ player, primaryButton, secondaryButton }) {
   return (
-    <li
-      className="player-card"
-      style={{ display: "flex", alignItems: "center", gap: "10px" }}
-    >
-      {/* Position number */}
-      <span style={{ width: "30px", fontWeight: "bold", textAlign: "center" }}>
-        {index}.
-      </span>
-
+    <li className="player-card" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       <img src={player.headshot} alt={player.fullName} />
       <div>
         <span style={{ fontWeight: "bold" }}>{player.fullName}</span>{" "}
@@ -19,14 +11,21 @@ function PlayerItem({ player, index, primaryButton, secondaryButton }) {
           ({player.position}) - {player.team}
         </span>
       </div>
-
+      {/* Primary Button */}
       {primaryButton && (
-        <button onClick={() => primaryButton.onClick(player)} style={{ marginLeft: "auto" }}>
+        <button
+          onClick={() => primaryButton.onClick(player)}
+          style={{ marginLeft: "auto" }}
+        >
           {primaryButton.label}
         </button>
       )}
+      {/* Secondary Button */}
       {secondaryButton && (
-        <button onClick={() => secondaryButton.onClick(player)} style={{ marginLeft: "5px" }}>
+        <button
+          onClick={() => secondaryButton.onClick(player)}
+          style={{ marginLeft: "5px" }}
+        >
           {secondaryButton.label}
         </button>
       )}

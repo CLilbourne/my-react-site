@@ -61,22 +61,22 @@ function Ranking() {
           {availablePlayers.length === 0 && <p>Server Down</p>}
 
           <ul style={{ overflowY: "auto", padding: 0 }}>
-            {availablePlayers.map((player) => (
-              <PlayerItem
+            {availablePlayers.map((player, index) => (
+                <PlayerItem
                 key={player.id}
-                index = {index+1}
                 player={player}
+                index={index + 1} // Pass current position
                 primaryButton={{
-                  label: "Up",
-                  onClick: () => movePlayerUp(player),
+                    label: "Up",
+                    onClick: () => movePlayerUp(player),
                 }}
                 secondaryButton={{
-                  label: "Down",
-                  onClick: () => movePlayerDown(player),
+                    label: "Down",
+                    onClick: () => movePlayerDown(player),
                 }}
-              />
+                />
             ))}
-          </ul>
+            </ul>
         </div>
       </div>
     </div>
