@@ -219,8 +219,9 @@ draftPlayer(playerToDraft);
                 <PlayerItem
                   key={player.id}
                   player={player}
-                  buttonLabel="Draft"
-                  onButtonClick={() => draftPlayer(player)}
+                  primaryButton={{
+                   label: "Draft",
+                   onClick: () => draftPlayer(player),}}
                 />
               ) : (
                 <PlayerItem key={player.id} player={player} />
@@ -239,9 +240,11 @@ draftPlayer(playerToDraft);
                   <PlayerItem
                     key={player.id}
                     player={player}
-                    buttonLabel="Drafted"
-                    onButtonClick={() => {}}
-                  />
+                     primaryButton={{
+                   label: "drop",
+                   onClick: () => {}}}
+                />
+
                 ))}
               </ul>
             </div>

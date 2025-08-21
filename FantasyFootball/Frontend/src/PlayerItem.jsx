@@ -14,9 +14,22 @@ function PlayerItem({ player, buttonLabel, onButtonClick }) {
           ({player.position}) - {player.team}
         </span>
       </div>
-      {buttonLabel && onButtonClick && (
-        <button onClick={() => onButtonClick(player)} style={{ marginLeft: "auto" }}>
-          {buttonLabel}
+      {/* Primary Button */}
+      {primaryButton && (
+        <button
+          onClick={() => primaryButton.onClick(player)}
+          style={{ marginLeft: "auto" }}
+        >
+          {primaryButton.label}
+        </button>
+      )}
+      {/* Secondary Button */}
+      {secondaryButton && (
+        <button
+          onClick={() => secondaryButton.onClick(player)}
+          style={{ marginLeft: "5px" }}
+        >
+          {secondaryButton.label}
         </button>
       )}
     </li>
