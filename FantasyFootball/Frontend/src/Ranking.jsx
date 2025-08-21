@@ -6,6 +6,8 @@ import { BACKEND_URL } from "./shared";
 import { USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS } from "./Global";
 import normalizeName from "./helpers";
 
+
+// DnD imports
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 function Ranking() {
@@ -14,9 +16,7 @@ function Ranking() {
   const [currentPickIndex, setCurrentPickIndex] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState(0);
 
-  // placeholder to avoid crash
-  const draftPlayer = (player) => console.log("Draft:", player.fullName);
-
+  // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
     fetch(`${BACKEND_URL}/NflPlayers`)
       .then((res) => {
@@ -40,58 +40,62 @@ function Ranking() {
       .catch(console.error);
   }, []);
 
+  // Handle drag end (reorder players)
   const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
+    if (!result.destination) return; // dropped outside the list
     const items = Array.from(availablePlayers);
-    const [moved] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, moved);
+    const [reordered] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reordered);
     setAvailablePlayers(items);
   };
 
   return (
-    <div style={{ display: "flex", gap: 40 }}>
-      <div className="draftPlayers" style={{ flex: 1 }}>
-        {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
-        {availablePlayers.length === 0 && <img src={mockdraft} alt="mockdraft" />}
+    <div>
+      <div style={{ display: "flex", gap: 40 }}>
+        <div className="draftPlayers" style={{ flex: 1 }}>
+          {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
+          {availablePlayers.length === 0 && <img src={mockdraft} alt="mockdraft" />}
 
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-  <Droppable droppableId="players">
-    {(provided) => (
-      <div
-        {...provided.droppableProps}
-        ref={provided.innerRef}
-        style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-      >
-        {availablePlayers.map((player, index) => (
-          <Draggable
-            key={player.id ?? index}
-            draggableId={String(player.id ?? index)}
-            index={index}
-          >
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-                style={{
-                  padding: "8px",
-                  border: "1px solid #ddd",
-                  borderRadius: "6px",
-                  background: snapshot.isDragging ? "#eee" : "#fff",
-                  ...provided.draggableProps.style,
-                }}
-              >
-                {player.fullName}
-              </div>
-            )}
-          </Draggable>
-        ))}
-        {provided.placeholder}
-      </div>
-    )}
-  </Droppable>
-</DragDropContext>
-
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="players">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{ overflowY: "auto", padding: 0 }}
+                >
+                  {availablePlayers.map((player, index) => (
+                    <Draggable key={player.id} draggableId={String(player.id)} index={index}>
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            ...provided.draggableProps.style,
+                            listStyle: "none",
+                            marginBottom: "8px",
+                          }}
+                        >
+                          {draftPickOrder[currentPickIndex] === selectedTeam ? (
+                            <PlayerItem
+                              player={player}
+                              buttonLabel="Draft"
+                              onButtonClick={() => draftPlayer(player)}
+                            />
+                          ) : (
+                            <PlayerItem player={player} />
+                          )}
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
       </div>
     </div>
   );
