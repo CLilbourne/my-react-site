@@ -1,10 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./Welcome.css"
+import "./Welcome.css";
+
 function Welcome() {
   const location = useLocation();
   const navigate = useNavigate();
-  const username = location.state?.username;
+
+  // ✅ get username either from state OR from localStorage
+  const [username, setUsername] = useState(
+    location.state?.username || JSON.parse(localStorage.getItem("user"))?.name
+  );
 
   useEffect(() => {
     if (!username) {
@@ -25,7 +30,8 @@ function Welcome() {
   const handleCurrentLeagues = () => {
     navigate("/ranking", { state: { username } });
   };
-   const handleMockDraft = () => {
+
+  const handleMockDraft = () => {
     navigate("/mock-draft", { state: { username } });
   };
 
@@ -33,10 +39,10 @@ function Welcome() {
     <div style={{ textAlign: "center", padding: "2rem", color: "white" }}>
       <h1>Welcome, {username}!</h1>
       <div style={{ marginTop: "2rem" }}>
-        <button className="welcomebuttons" onClick={handleCreateLeague} >
+        <button className="welcomebuttons" onClick={handleCreateLeague}>
           Create League
         </button>
-        <button className="welcomebuttons"onClick={handleJoinLeague} >
+        <button className="welcomebuttons" onClick={handleJoinLeague}>
           Join League
         </button>
         <button className="welcomebuttons" onClick={handleCurrentLeagues}>
@@ -49,4 +55,5 @@ function Welcome() {
     </div>
   );
 }
+
 export default Welcome;
