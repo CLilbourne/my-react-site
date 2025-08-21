@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
+import "./DraftRoom.css"; // reuse same styling for search/filter
+
 function Ranking() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ function Ranking() {
     location.state?.username || JSON.parse(localStorage.getItem("user"))?.name;
 
   const [availablePlayers, setAvailablePlayers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterPos, setFilterPos] = useState("ALL");
 
   // check username
   useEffect(() => {
@@ -116,23 +120,53 @@ function Ranking() {
     });
   };
 
-  const playersWithRanks = getPlayersWithPositionalRanks();
+  // ✅ Filtering logic (same as DraftRoom)
+  const filteredPlayers = getPlayersWithPositionalRanks().filter((p) => {
+    const matchesSearch = p.fullName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesPos = filterPos === "ALL" || p.position === filterPos;
+    return matchesSearch && matchesPos;
+  });
 
   return (
     <div>
       <h1>{username}'s Player Rankings</h1>
-      <div style={{ marginBottom: "1rem" }}></div>
+
+      {/* Search + Filter Controls (reused from DraftRoom) */}
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+        <input
+          type="text"
+          placeholder="Search by name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+
+        <select
+          className="position-select"
+          value={filterPos}
+          onChange={(e) => setFilterPos(e.target.value)}
+        >
+          <option value="ALL">All Positions</option>
+          <option value="QB">QB</option>
+          <option value="RB">RB</option>
+          <option value="WR">WR</option>
+          <option value="TE">TE</option>
+        </select>
+      </div>
+
       <div style={{ display: "flex", gap: 40 }}>
         <div className="draftPlayers" style={{ flex: 1 }}>
-          {playersWithRanks.length === 0 && <p>Loading players...</p>}
+          {filteredPlayers.length === 0 && <p>No players found...</p>}
 
           <ul style={{ overflowY: "auto", padding: 0 }}>
-            {playersWithRanks.map((player, index) => (
+            {filteredPlayers.map((player, index) => (
               <PlayerItem
                 key={player.id}
                 player={player}
-                index={index + 1} // global rank
-                positionalRank={player.positionRank} // ✅ new prop
+                index={index + 1} // global rank in filtered list
+                positionalRank={player.positionRank}
                 primaryButton={{
                   label: "Up",
                   onClick: () => movePlayerUp(player),
