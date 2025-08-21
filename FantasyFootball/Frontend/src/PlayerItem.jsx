@@ -1,5 +1,6 @@
 import React from "react";
 import "./Draft.css";
+import {positionColors} from "./playerData";
 
 function PlayerItem({ player, index, primaryButton, secondaryButton }) {
   return (
@@ -32,7 +33,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton }) {
         <br />
         {/* ✅ Position-specific ranking (ex: WR3, RB7) */}
         {player.positionRank && (
-          <span style={{ color: "#6152b1ff", fontSize: "0.85em", fontWeight: "bold" }}>
+          <span style={{Color: player? positionColors[player.position.toLowerCase()]|| 'black' : '#29354e;', fontSize: "0.85em", fontWeight: "bold" }}>
             {player.positionRank}
           </span>
         )}
