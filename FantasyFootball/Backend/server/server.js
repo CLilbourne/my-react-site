@@ -20,9 +20,11 @@ let db;
 async function startServer() {
   try {
     await client.connect();
-    db = client.db('NflPlayers');
+    db = client.db('NflPlayers'); // ✅ still using this DB
 
-    // GET route
+    // ========== EXISTING ROUTES ==========
+
+    // GET all NFL players
     app.get('/NflPlayers', async (req, res) => {
       try {
         const players = await db.collection('Info').find().toArray();
@@ -55,42 +57,79 @@ async function startServer() {
     });
 
     // LOGIN route
-  app.post('/login', async (req, res) => {
-  let { email, password } = req.body;
+    app.post('/login', async (req, res) => {
+      let { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password required.' });
-  }
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password required.' });
+      }
 
-  email = email.trim().toLowerCase();
+      email = email.trim().toLowerCase();
 
-  try {
-  const user = await db.collection('UserData').findOne({ email });
+      try {
+        const user = await db.collection('UserData').findOne({ email });
 
-  console.log('Found user:', user);
+        console.log('Found user:', user);
 
-  if (!user) {
-    console.log('User not found');
-    return res.status(401).json({ error: 'Invalid email or password.' });
-  }
+        if (!user) {
+          console.log('User not found');
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
 
-  if (user.password !== password) {
-    console.log('Password mismatch');
-    return res.status(401).json({ error: 'Invalid email or password.' });
-  }
+        if (user.password !== password) {
+          console.log('Password mismatch');
+          return res.status(401).json({ error: 'Invalid email or password.' });
+        }
 
-  res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
-} catch (err) {
-  console.error('Login error:', err);
-  res.status(500).json({ error: 'Internal server error' });
-}
-});
+        res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
+      } catch (err) {
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    });
 
-    // Server start
+    // ========== NEW RANKINGS ROUTES ==========
+
+    // ✅ Save or update a user's rankings
+    app.post('/saveRankings', async (req, res) => {
+      const { username, rankings } = req.body;
+
+      if (!username || !Array.isArray(rankings)) {
+        return res.status(400).json({ error: 'Invalid payload' });
+      }
+
+      try {
+        await db.collection('Rankings').updateOne(
+          { username },                     // find by username
+          { $set: { rankings } },           // save rankings array (player ids or objects)
+          { upsert: true }                  // create doc if doesn't exist
+        );
+        res.json({ success: true });
+      } catch (err) {
+        console.error('Error saving rankings:', err);
+        res.status(500).json({ error: 'Failed to save rankings' });
+      }
+    });
+
+    // ✅ Get a user's rankings
+    app.get('/getRankings/:username', async (req, res) => {
+      try {
+        const doc = await db.collection('Rankings').findOne({ username: req.params.username });
+        res.json(doc?.rankings || []); // return rankings array or []
+      } catch (err) {
+        console.error('Error fetching rankings:', err);
+        res.status(500).json({ error: 'Failed to fetch rankings' });
+      }
+    });
+
+    // ========== SERVER START ==========
+
     const PORT = process.env.PORT || 3001;
-const HOST = '0.0.0.0';
+    const HOST = '0.0.0.0';
 
-app.listen(PORT, HOST, () => console.log(`Server is running on http://${HOST}:${PORT}`));
+    app.listen(PORT, HOST, () =>
+      console.log(`Server is running on http://${HOST}:${PORT}`)
+    );
 
   } catch (err) {
     console.error('Failed to start server:', err);
