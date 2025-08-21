@@ -1,104 +1,78 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PlayerItem from "./PlayerItem";
-import adpData from "./assets/adp.json";
-import mockdraft from "./assets/mockdraft.png";
-import { BACKEND_URL } from "./shared";
-import { USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS } from "./Global";
-import normalizeName from "./helpers";
+import { Draggable } from "gsap/Draggable";
+import gsap from "gsap";
 
+function Ranking({ availablePlayers }) {
+  const containerRef = useRef(null);
+  const [sortables, setSortables] = useState([]);
 
-// DnD imports
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-function Ranking() {
-  const [availablePlayers, setAvailablePlayers] = useState([]);
-  const [draftPickOrder, setDraftPickOrder] = useState([]);
-  const [currentPickIndex, setCurrentPickIndex] = useState(0);
-  const [selectedTeam, setSelectedTeam] = useState(0);
-
-  // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
-    fetch(`${BACKEND_URL}/NflPlayers`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        const merged = data.map((player) => {
-          const normalizedPlayerName = normalizeName(player.fullName);
-          const adpMatch = adpData.find(
-            (adp) => normalizeName(adp.Player) === normalizedPlayerName
-          );
-          return {
-            ...player,
-            adp: adpMatch ? parseFloat(adpMatch["AVG"]) : Infinity,
-          };
-        });
-        merged.sort((a, b) => a.adp - b.adp);
-        setAvailablePlayers(merged);
-      })
-      .catch(console.error);
-  }, []);
+    if (!availablePlayers.length) return;
 
-  // Handle drag end (reorder players)
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return; // dropped outside the list
-    const items = Array.from(availablePlayers);
-    const [reordered] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reordered);
-    setAvailablePlayers(items);
-  };
+    const rowSize = 130;
+    const colSize = 300; // width of player row
+    const cells = availablePlayers.map((_, index) => ({
+      index,
+      x: 0,
+      y: index * rowSize,
+    }));
+
+    const container = containerRef.current;
+    const newSortables = Array.from(container.children).map((el, index) => {
+      const sortable = {
+        element: el,
+        index,
+        cell: cells[index],
+        setIndex: function (i) {
+          this.index = i;
+          this.cell = cells[i];
+          gsap.to(this.element, { x: this.cell.x, y: this.cell.y, duration: 0.3 });
+        },
+      };
+
+      Draggable.create(el, {
+        type: "y",
+        bounds: container,
+        onDrag: function () {
+          const newIndex = Math.round(this.y / rowSize);
+          if (newIndex !== sortable.index && newIndex >= 0 && newIndex < availablePlayers.length) {
+            const temp = newSortables[newIndex];
+            newSortables[newIndex] = sortable;
+            newSortables[sortable.index] = temp;
+            newSortables.forEach((s, i) => s.setIndex(i));
+          }
+        },
+      });
+
+      gsap.set(el, { x: sortable.cell.x, y: sortable.cell.y });
+      return sortable;
+    });
+
+    setSortables(newSortables);
+  }, [availablePlayers]);
 
   return (
-    <div>
-      <div style={{ display: "flex", gap: 40 }}>
-        <div className="draftPlayers" style={{ flex: 1 }}>
-          {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
-          {availablePlayers.length === 0 && <img src={mockdraft} alt="mockdraft" />}
-
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="players">
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{ overflowY: "auto", padding: 0 }}
-                >
-                  {availablePlayers.map((player, index) => (
-                    <Draggable key={player.id} draggableId={String(player.id)} index={index}>
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            listStyle: "none",
-                            marginBottom: "8px",
-                          }}
-                        >
-                          {draftPickOrder[currentPickIndex] === selectedTeam ? (
-                            <PlayerItem
-                              player={player}
-                              buttonLabel="Draft"
-                              onButtonClick={() => draftPlayer(player)}
-                            />
-                          ) : (
-                            <PlayerItem player={player} />
-                          )}
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
+    <div
+      className="player-grid"
+      ref={containerRef}
+      style={{ position: "relative", height: availablePlayers.length * 130 }}
+    >
+      {availablePlayers.map((player, index) => (
+        <div
+          key={player.id}
+          className="player-item"
+          style={{
+            position: "absolute",
+            width: "280px",
+            height: "120px",
+            margin: "5px",
+          }}
+        >
+          <PlayerItem player={player} />
         </div>
-      </div>
+      ))}
     </div>
   );
 }
-
 export default Ranking;
