@@ -2,7 +2,9 @@ import React from "react";
 import "./Draft.css";
 import {positionColors} from "./playerData";
 
-function PlayerItem({ player, index, primaryButton, secondaryButton }) {
+function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
+  if (status === "gone") background = "#ffcccc"; // light red
+  if (status === "got") background = "#ccffcc"; // light green
   return (
     <li
       className="player-card"
