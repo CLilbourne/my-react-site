@@ -47,7 +47,7 @@ function Ranking() {
    const movePlayerDown = (player) => {
     setAvailablePlayers((prevPlayers) => {
       const index = prevPlayers.findIndex((p) => p.id === player.id);
-      if (index >= 400) return prevPlayers; // Can't move up the first player
+      if (index >= 950) return prevPlayers; // Can't move up the first player
       const newPlayers = [...prevPlayers];
       // Swap with the player above
       [newPlayers[index + 1], newPlayers[index]] = [newPlayers[index], newPlayers[index + 1]];
