@@ -1,9 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+
 import PlayerItem from "./PlayerItem";
-import SnakeDraft from "./SnakeDraft";
-import adpData from "./assets/adp.json";
-import mockdraft from "./assets/mockdraft.png"
-import { BACKEND_URL } from "./shared"
 function Ranking() {
   <ul style={{ padding: 0 }}>
                 {team.map((player) => (

@@ -216,16 +216,6 @@ draftPlayer(playerToDraft);
 
           {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
           {availablePlayers.length === 0 && <img src={mockdraft}></img>}
-          <input type="text" placeholder="Search by name..." ></input>
-           <select>
-            <option value="">All Positions</option>
-            <option value="QB">QB</option>
-            <option value="RB">RB</option>
-            <option value="WR">WR</option>
-            <option value="TE">TE</option>
-            <option value="DEF">DEF</option>
-            <option value="K">K</option>
-          </select>
           
           <ul style={{overflowY: "auto", padding: 0}}>
             {availablePlayers.map((player) =>
