@@ -6,12 +6,10 @@ import { BACKEND_URL } from "./shared";
 import { USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS } from "./Global";
 import normalizeName from "./helpers";
 
-
-import React from 'react';
 import { IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, ReorderEndCustomEvent } from '@ionic/react';
 
 function Example() {
-  function handleReorderEnd(event: ReorderEndCustomEvent) {
+  function handleReorderEnd(event) {
     // The `from` and `to` properties contain the index of the item
     // when the drag started and ended, respectively
     console.log('Dragged from index', event.detail.from, 'to', event.detail.to);
