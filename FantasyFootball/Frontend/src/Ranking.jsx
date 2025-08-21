@@ -11,11 +11,7 @@ import normalizeName from "./helpers"
 function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
-  const [draftPickOrder, setDraftPickOrder] = useState([]);
-  const [currentPickIndex, setCurrentPickIndex] = useState(0);
-  const [selectedTeam, setSelectedTeam] = useState(0);
-
-
+  
   // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
     fetch(`${BACKEND_URL}/NflPlayers`)
@@ -54,8 +50,10 @@ function Ranking() {
                 <PlayerItem
                   key={player.id}
                   player={player}
-                  buttonLabel="Draft"
-                  onButtonClick={() => draftPlayer(player)}
+                  buttonLabel="Up"
+                  onButtonClick={() => draftPlayer(player)
+                    }
+                    
                 />
             )}
           </ul>
