@@ -32,8 +32,8 @@ function PlayerItem({ player, index, primaryButton, secondaryButton }) {
         <br />
         {/* ✅ Position-specific ranking (ex: WR3, RB7) */}
         {player.positionRank && (
-          <span style={{ color: "#4caf50", fontSize: "0.85em" }}>
-            {player.position}{player.positionRank}
+          <span style={{ color: "#352c66ff", fontSize: "0.85em" }}>
+            {player.positionRank}
           </span>
         )}
       </div>
