@@ -23,7 +23,7 @@ function Welcome() {
   };
 
   const handleCurrentLeagues = () => {
-    navigate("/current-leagues", { state: { username } });
+    navigate("/ranking", { state: { username } });
   };
    const handleMockDraft = () => {
     navigate("/mock-draft", { state: { username } });
@@ -40,7 +40,7 @@ function Welcome() {
           Join League
         </button>
         <button className="welcomebuttons" onClick={handleCurrentLeagues}>
-          Current Leagues
+          Ranking
         </button>
         <button className="welcomebuttons" onClick={handleMockDraft}>
           Mock Draft
