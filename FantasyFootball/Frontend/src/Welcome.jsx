@@ -24,7 +24,7 @@ function Welcome() {
   };
 
   const handleJoinLeague = () => {
-    navigate("/join-league", { state: { username } });
+    navigate("/draft-room", { state: { username } });
   };
 
   const handleCurrentLeagues = () => {
