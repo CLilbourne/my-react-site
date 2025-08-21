@@ -24,6 +24,7 @@ function Ranking() {
   }, [username, navigate]);
   if (!username) return null;
 
+      const [players, setPlayers] = useState([]);
       const [searchTerm, setSearchTerm] = useState("");
       const [filterPos, setFilterPos] = useState("ALL");
       const filteredPlayers = players.filter((p) => {
@@ -52,7 +53,7 @@ function Ranking() {
         });
 
         merged.sort((a, b) => a.adp - b.adp);
-
+        setPlayers(merged);
         // ✅ fetch saved rankings from backend
         const savedRes = await fetch(`${BACKEND_URL}/getRankings/${username}`);
         const savedRankings = await savedRes.json();
