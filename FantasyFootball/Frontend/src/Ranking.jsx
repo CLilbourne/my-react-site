@@ -56,6 +56,7 @@ function Ranking() {
   };
   return (
     <div>
+      <h1>Welcome, {username}!</h1>
     <div style={{ marginBottom: "1rem" }}></div>
       <div style={{ display: "flex", gap: 40 }}>
         <div className="draftPlayers" style={{ flex: 1 }}>
