@@ -21,6 +21,12 @@
   align-items: center;
   gap: 12px;
 }
+.header-nav-items {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
 .logout-btn {
   background: none;
   border: none;
@@ -28,8 +34,7 @@
   cursor: pointer;
   font-weight: 500;
   font-size: 14px;
-  padding: 0;           /* remove any default button padding */
-  margin-left: 0;       /* align with gap in header-nav */
+  padding: 0;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -37,7 +42,6 @@
 .logout-btn:hover {
   color: #83127d;
 }
-
 .header-title {
   font-size: 20px;
   font-weight: bold;

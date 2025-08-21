@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./header.css";
@@ -29,19 +28,19 @@ function Header() {
 
       <nav className="header-nav">
         {username ? (
-          <>
+          <div className="header-nav-items">
             <Link to="/mock-draft">Mock Draft</Link>
             <Link to="/welcome">{username.toUpperCase()}</Link>
             <button className="logout-btn" onClick={handleLogout}>
               Logout
             </button>
-          </>
+          </div>
         ) : (
-          <>
+          <div className="header-nav-items">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
             <Link to="/mock-draft">Mock Draft</Link>
-          </>
+          </div>
         )}
       </nav>
     </header>
