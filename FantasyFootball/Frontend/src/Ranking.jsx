@@ -1,8 +1,9 @@
-import React, { useEffect, useState} from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useLocation, useNavigate } from "react-router-dom";
-import "./Welcome.css"
-
+import React, { useState, useEffect, useCallback } from "react";
+import PlayerItem from "./PlayerItem";
+import SnakeDraft from "./SnakeDraft";
+import adpData from "./assets/adp.json";
+import mockdraft from "./assets/mockdraft.png"
+import { BACKEND_URL } from "./shared"
 function Ranking() {
   <ul style={{ padding: 0 }}>
                 {team.map((player) => (
@@ -13,6 +14,6 @@ function Ranking() {
                     onButtonClick={() => {}}
                   />
                 ))}
-              </ul>
+</ul>
 }
 export default Ranking;
