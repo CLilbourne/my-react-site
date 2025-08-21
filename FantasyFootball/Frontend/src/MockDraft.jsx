@@ -4,12 +4,14 @@ import SnakeDraft from "./SnakeDraft";
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
-// Timer durations in seconds
+import { useLocation, useNavigate } from "react-router-dom";
+
 import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
 
 import normalizeName from "./helpers";
 
 export default function Draft() {
+
   const location = useLocation();
   const navigate = useNavigate();
 
