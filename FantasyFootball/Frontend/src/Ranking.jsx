@@ -70,25 +70,6 @@ function Ranking() {
             )}
           </ul>
         </div>
-
-        <div style={{ flex: 1 }}>
-          <h3 style={{ color: "white" }}>All Teams</h3>
-          {teams.map((team, i) => (
-            <div key={i} style={{ marginBottom: "1rem" }}>
-              <strong style={{ color: "white" }}>Team {i + 1}</strong>
-              <ul style={{ padding: 0 }}>
-                {team.map((player) => (
-                  <PlayerItem
-                    key={player.id}
-                    player={player}
-                    buttonLabel="Drafted"
-                    onButtonClick={() => {}}
-                  />
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
