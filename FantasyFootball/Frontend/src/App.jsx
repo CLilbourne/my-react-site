@@ -37,13 +37,12 @@ function App() {
             element={<div className="main-content" style={{ padding: 20 }}>
                 <MockDraft/>
               </div>} />
-        </Routes>
         <Route 
             path='/ranking' 
             element={<div className="main-content" style={{ padding: 20 }}>
                 <Ranking/>
               </div>} />
-
+        </Routes>
       </BrowserRouter>
       <Footer />
     </div>
