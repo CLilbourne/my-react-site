@@ -25,32 +25,47 @@ function DraftRoom() {
   const [status, setStatus] = useState({}); 
   // status = { playerId: "gone" | "got" }
 
-  useEffect(() => {
+    useEffect(() => {
     async function fetchPlayers() {
-      try {
+        try {
         const res = await fetch(`${BACKEND_URL}/NflPlayers`);
         const data = await res.json();
 
         const merged = data.map((player) => {
-          const normalizedPlayerName = normalizeName(player.fullName);
-          const adpMatch = adpData.find(
+            const normalizedPlayerName = normalizeName(player.fullName);
+            const adpMatch = adpData.find(
             (adp) => normalizeName(adp.Player) === normalizedPlayerName
-          );
-          return {
+            );
+            return {
             ...player,
             adp: adpMatch ? parseFloat(adpMatch["AVG"]) : Infinity,
-          };
+            };
         });
 
-        merged.sort((a, b) => a.adp - b.adp);
-        setPlayers(merged);
-      } catch (err) {
+        // ✅ fetch user's saved rankings
+        const savedRes = await fetch(`${BACKEND_URL}/getRankings/${username}`);
+        const savedRankings = await savedRes.json();
+
+        if (savedRankings.length > 0) {
+            // reorder players according to saved rankings (IDs in order)
+            const rankedPlayers = savedRankings
+            .map((id) => merged.find((p) => p.id === id))
+            .filter(Boolean);
+            // add any new players not in saved list at the end
+            const remaining = merged.filter((p) => !savedRankings.includes(p.id));
+            setPlayers([...rankedPlayers, ...remaining]);
+        } else {
+            // fallback to ADP order if no saved ranking
+            merged.sort((a, b) => a.adp - b.adp);
+            setPlayers(merged);
+        }
+        } catch (err) {
         console.error("Error fetching players:", err);
-      }
+        }
     }
 
     fetchPlayers();
-  }, []);
+    }, [username]);
 
   // Filtering logic
   const filteredPlayers = players.filter((p) => {
