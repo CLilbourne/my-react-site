@@ -44,6 +44,11 @@ function App() {
             element={<div className="main-content" style={{ padding: 20 }}>
                 <Ranking/>
               </div>} />
+        <Route 
+            path='/draft-room' 
+            element={<div className="main-content" style={{ padding: 20 }}>
+                <DraftRoom/>
+              </div>} />
         </Routes>
       </BrowserRouter>
       <Footer />
