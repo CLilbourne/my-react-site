@@ -24,14 +24,18 @@
 .logout-btn {
   background: none;
   border: none;
-  color: #fff;
+  color: white;
   cursor: pointer;
-  margin-left: 1rem;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0;           /* remove any default button padding */
+  margin-left: 0;       /* align with gap in header-nav */
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .logout-btn:hover {
-  text-decoration: underline;
+  color: #83127d;
 }
 
 .header-title {
