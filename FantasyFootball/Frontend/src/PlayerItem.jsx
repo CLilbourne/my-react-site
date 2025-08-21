@@ -33,7 +33,12 @@ function PlayerItem({ player, index, primaryButton, secondaryButton }) {
         <br />
         {/* ✅ Position-specific ranking (ex: WR3, RB7) */}
         {player.positionRank && (
-          <span style={{Color: player? positionColors[player.position.toLowerCase()]|| 'black' : '#29354e;', fontSize: "0.85em", fontWeight: "bold" }}>
+          <span style={{
+              color: positionColors[player.position.toLowerCase()] || "#29354e",
+              fontSize: "0.85em",
+              fontWeight: "bold",
+            }}
+          >
             {player.positionRank}
           </span>
         )}
