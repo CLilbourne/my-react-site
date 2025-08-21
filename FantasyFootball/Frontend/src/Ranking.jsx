@@ -5,7 +5,7 @@ import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
 
-function Ranking({ availablePlayers, draftPickOrder, currentPickIndex, selectedTeam, draftPlayer }) {
+function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [teams, setTeams] = useState(Array.from({ length: NUM_TEAMS }, () => []));
