@@ -11,6 +11,8 @@ import normalizeName from "./helpers"
 function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
+  const [draftPickOrder, setDraftPickOrder] = useState([]);
+  const [currentPickIndex, setCurrentPickIndex] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState(0);
 
 
@@ -45,21 +47,16 @@ function Ranking() {
 
         <div className="draftPlayers" style={{ flex: 1 }}>
 
-          {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
-          {availablePlayers.length === 0 && <img src={mockdraft}></img>}
+          {availablePlayers.length === 0 && <p> Server Down</p>}
           
           <ul style={{overflowY: "auto", padding: 0}}>
             {availablePlayers.map((player) =>
-              draftPickOrder[currentPickIndex] === selectedTeam ? (
                 <PlayerItem
                   key={player.id}
                   player={player}
-                  buttonLabel="UP"
+                  buttonLabel="Draft"
                   onButtonClick={() => draftPlayer(player)}
                 />
-              ) : (
-                <PlayerItem key={player.id} player={player} />
-              )
             )}
           </ul>
         </div>
