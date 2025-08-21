@@ -1,13 +1,10 @@
 import React from "react";
 import "./Draft.css"; // Optional styles
 
-function PlayerItem({ player, buttonLabel, onButtonClick }) {
+function PlayerItem({ player, primaryButton, secondaryButton }) {
   return (
     <li className="player-card" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      <img
-        src={player.headshot}
-        alt={player.fullName}
-      />
+      <img src={player.headshot} alt={player.fullName} />
       <div>
         <span style={{ fontWeight: "bold" }}>{player.fullName}</span>{" "}
         <span style={{ color: "#bbb", fontSize: "0.9em" }}>
