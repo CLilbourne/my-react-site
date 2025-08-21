@@ -5,14 +5,8 @@ import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
 import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
+import normalizeName from "./helpers"
 
-function normalizeName(name) {
-  return name
-    .toLowerCase()
-    .replace(/\s+jr\.?$/i, "")
-    .replace(/\./g, "")
-    .trim();
-}
 
 function Ranking() {
    // State declarations
@@ -51,135 +45,6 @@ function Ranking() {
       .catch(console.error);
   }, []);
 
-  // Create snake draft order
-  useEffect(() => {
-    const order = [];
-    for (let round = 0; round < TOTAL_ROUNDS; round++) {
-      const roundOrder = [...Array(NUM_TEAMS).keys()];
-      if (round % 2 === 1) roundOrder.reverse();
-      order.push(...roundOrder);
-    }
-    setDraftPickOrder(order);
-  }, []);
-
-  // Draft a player for the current team
-  const draftPlayer = useCallback(
-    (player) => {
-      if (draftComplete) return;
-
-      const teamIndex = draftPickOrder[currentPickIndex];
-      if (teamIndex === undefined) return;
-
-      // Add to drafted players (overall)
-      setDraftedPlayers((prev) => [...prev, player]);
-
-      // Add player to the correct team
-      setTeams((prev) => {
-        const newTeams = [...prev];
-        newTeams[teamIndex] = [...newTeams[teamIndex], player];
-        return newTeams;
-      });
-
-      // Remove from available players
-      setAvailablePlayers((prev) => prev.filter((p) => p.id !== player.id));
-
-      // Advance pick index
-      setCurrentPickIndex((prev) => prev + 1);
-
-      // Reset timer for next pick based on next team's turn
-      const nextPick = currentPickIndex + 1;
-      if (nextPick >= draftPickOrder.length) {
-        setTimer(null);
-      } else {
-        const nextTeam = draftPickOrder[nextPick];
-        setTimer(nextTeam === selectedTeam ? USER_TIMER_DURATION : AI_TIMER_DURATION);
-      }
-    },
-    [currentPickIndex, draftPickOrder, selectedTeam, draftComplete]
-  );
-
-  // Timer and auto-draft effect
-  useEffect(() => {
-    if (draftComplete) return;
-
-    // On pick change or timer reset, set initial timer if null
-    if (timer === null) {
-      const currentTeam = draftPickOrder[currentPickIndex];
-      setTimer(currentTeam === selectedTeam ? USER_TIMER_DURATION : AI_TIMER_DURATION);
-      return;
-    }
-
-    // Auto draft if timer hits zero
-    if (timer <= 0) {
-  if (availablePlayers.length === 0) return;
-
-  const teamIndex = draftPickOrder[currentPickIndex];
-  if (teamIndex === undefined) return;
-
-  // Get current team players
-  const currentTeamPlayers = teams[teamIndex] || [];
-  
-function needsPosition(position) {
-  const posCount = (pos) => currentTeamPlayers.filter(p => p.position === pos).length;
-  const rbCount = posCount("RB");
-  const wrCount = posCount("WR");
-  const totalRbWr = rbCount + wrCount;
-  const qbCount = posCount("QB");
-  const teCount = posCount("TE");
-
-  switch (position) {
-    case "QB":
-      return qbCount < 2 && (qbCount === 0 || Math.random() < 0.01); // max 2, lower chance for 2nd QB
-    case "RB":
-      return rbCount < 3 || (totalRbWr < 10 && wrCount >= 2);
-    case "WR":
-      return wrCount < 3 || (totalRbWr < 10 && rbCount >= 2);
-    case "TE":
-      return teCount < 2 && (teCount === 0 || Math.random() < 0.01);
-    case "PK":
-      return posCount("PK") === 0;
-    case "DEF":
-      return posCount("DEF") === 0;
-    default:
-      return true;
-  }
-}
-
-// Try randomizing from top 5 upfront
-const top5 = availablePlayers.slice(0, 5);
-const top10 = availablePlayers.slice(0, 10);
-const shuffled = top5.sort(() => Math.random() - 0.5);
-
-// 1. Try top 5 randomized
-let playerToDraft = shuffled.find(p => needsPosition(p.position));
-
-// 2. Try top 10, obeying team needs
-if (!playerToDraft) {
-  playerToDraft = top10.find(p => needsPosition(p.position));
-}
-
-// 3. Try full list, top-to-bottom, obeying team needs
-if (!playerToDraft) {
-  playerToDraft = availablePlayers.find(p => needsPosition(p.position));
-}
-
-// 4. Desperate fallback (only if all else fails)
-if (!playerToDraft) {
-  console.warn("⚠️ No player fits position needs — falling back.");
-  playerToDraft = availablePlayers[0]; // or null-check if needed
-}
-
-draftPlayer(playerToDraft);
-
-  return;
-}
-    // Countdown timer every second
-    const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [timer, draftComplete, currentPickIndex, draftPickOrder, selectedTeam, availablePlayers, draftPlayer]);
 
   return (
     <div>
