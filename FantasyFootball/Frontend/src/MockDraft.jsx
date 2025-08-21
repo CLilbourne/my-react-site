@@ -5,11 +5,7 @@ import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
 // Timer durations in seconds
-const USER_TIMER_DURATION = 30;
-const AI_TIMER_DURATION = 0;
-const NUM_TEAMS = 12;
-const TOTAL_ROUNDS = 15;
-
+import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
 
 // Utility to normalize player names for matching
 function normalizeName(name) {
