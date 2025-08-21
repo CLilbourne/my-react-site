@@ -8,6 +8,7 @@ import Welcome from './Welcome';
 import MockDraft from './MockDraft';
 import AboutMe from './AboutMe/AboutMe'
 import Ranking from './Ranking'
+import DraftRoom from './DraftRoom'
 
 function App() {
   return (
