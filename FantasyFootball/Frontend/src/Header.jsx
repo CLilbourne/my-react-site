@@ -17,17 +17,14 @@ function Header() {
         {username ? (
           // ✅ Logged in: show username linking to Welcome
           <>
-          <a href="/welcome">{username.toUpperCase()}</a>
-          <a href="AboutMe">About Me</a>
           <a href="mock-draft">Mock Draft</a>
-
+          <a href="/welcome">{username.toUpperCase()}</a>
           </>
         ) : (
           // ❌ Not logged in: show original nav
           <>
             <a href="login">Login</a>
             <a href="register">Register</a>
-            <a href="AboutMe">About Me</a>
             <a href="mock-draft">Mock Draft</a>
           </>
         )}
