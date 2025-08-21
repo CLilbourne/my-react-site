@@ -4,7 +4,7 @@ import { BACKEND_URL } from "./shared";
 import adpData from "./assets/adp.json";
 import normalizeName from "./helpers";
 import { useLocation, useNavigate } from "react-router-dom";
-import "DraftRoom.css"
+import "./DraftRoom.css"
 
 function DraftRoom() {
     const location = useLocation();
