@@ -6,7 +6,7 @@ import { BACKEND_URL } from "./shared";
 import { USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS } from "./Global";
 import normalizeName from "./helpers";
 
-import { IonItem, IonLabel, IonList, IonReorder, IonReorderGroup, ReorderEndCustomEvent } from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonReorder, IonReorderGroup } from '@ionic/react';
 
 function Example() {
   function handleReorderEnd(event) {
