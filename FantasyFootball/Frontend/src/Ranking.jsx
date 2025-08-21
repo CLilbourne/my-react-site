@@ -54,7 +54,7 @@ function Ranking() {
                 <PlayerItem
                   key={player.id}
                   player={player}
-                  buttonLabel="Draft"
+                  buttonLabel="UP"
                   onButtonClick={() => draftPlayer(player)}
                 />
               ) : (
