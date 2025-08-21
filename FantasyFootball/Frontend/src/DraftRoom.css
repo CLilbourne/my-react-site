@@ -1,7 +1,7 @@
 .position-select {
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #2a2a42;
   background-color: #1e1e2f;
   color: white;
   font-weight: bold;
@@ -22,7 +22,7 @@
 .search-input {
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #2a2a42;
   background-color: #1e1e2f;
   color: white;
   font-size: 1rem;
