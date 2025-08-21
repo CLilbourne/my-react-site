@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
-import "./DraftRoom.css"
-
 function Ranking() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -123,23 +121,7 @@ function Ranking() {
   return (
     <div>
       <h1>{username}'s Player Rankings</h1>
-      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-
-        <select  className="position-select" value={filterPos} onChange={(e) => setFilterPos(e.target.value)}>
-          <option value="ALL">All Positions</option>
-          <option value="QB">QB</option>
-          <option value="RB">RB</option>
-          <option value="WR">WR</option>
-          <option value="TE">TE</option>
-        </select>
-      </div>
+      <div style={{ marginBottom: "1rem" }}></div>
       <div style={{ display: "flex", gap: 40 }}>
         <div className="draftPlayers" style={{ flex: 1 }}>
           {playersWithRanks.length === 0 && <p>Loading players...</p>}
