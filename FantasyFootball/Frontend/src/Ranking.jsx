@@ -6,8 +6,18 @@ import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
 
 function Ranking() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const username = location.state?.username;
   const [availablePlayers, setAvailablePlayers] = useState([]);
+   
+  //check username
+  useEffect(() => {
+    if (!username) {
+      navigate("/login", { replace: true });
+    }
+  }, [username, navigate]);
+  if (!username) return null;
 
   // Fetch players + merge ADP, sort by ADP
   useEffect(() => {
