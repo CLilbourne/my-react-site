@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css"; // reuse same styles
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "./shared"
+import { BACKEND_URL } from "./shared";
 
 function Login() {
   const [form, setForm] = useState({
@@ -9,12 +9,14 @@ function Login() {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ new: track loading state
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.email || !form.password) {
@@ -23,6 +25,7 @@ function Login() {
     }
 
     try {
+      setLoading(true); // ✅ disable button + show loading state
       const res = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,12 +38,18 @@ function Login() {
         setError(data.error || "Login failed");
       } else {
         setError("");
-        // Navigate to welcome and pass username in state
-        navigate("/welcome", { state: { username: data.user.name } });
+
+        // ✅ persist user info in localStorage so refresh doesn’t lose it
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // ✅ navigate without needing to pass username in state anymore
+        navigate("/welcome");
       }
     } catch (err) {
       console.error("Login fetch error:", err);
       setError("Network error");
+    } finally {
+      setLoading(false); // ✅ stop loading
     }
   };
 
@@ -66,12 +75,17 @@ function Login() {
             onChange={handleChange}
             className="signup-input"
           />
-          <button type="submit" className="signup-button">
-            Log In
+          <button
+            type="submit"
+            className="signup-button"
+            disabled={loading} // ✅ prevent double submits
+          >
+            {loading ? "Logging in..." : "Log In"}
           </button>
         </form>
         <p className="signup-footer">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
+          {/* ✅ use Link instead of <a> to avoid page reload */}
           <a href="/register" className="signup-link">
             Sign Up
           </a>
