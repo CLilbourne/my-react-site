@@ -1,7 +1,6 @@
 
 import "./header.css";
 import { Link } from "react-router-dom";
-import Ranking from "./Ranking";
 
 function Header() {
   // ✅ Get user from localStorage (same as in DraftRoom)
@@ -11,22 +10,21 @@ function Header() {
   return (
     <header className="header">
       <div className="header-left">
-        <div className="header-title">
-          <Link to="/">HireConnor.org</Link>
-        </div>
+        <div className="header-title"><a href="/">HireConnor.org</a> </div>
       </div>
 
       <nav className="header-nav">
         {username ? (
           // ✅ Logged in: show username linking to Welcome
-          <Link to="/welcome">{username}</Link>
+          <a href="/welcome">{username}</a>
+          
         ) : (
           // ❌ Not logged in: show original nav
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-            <Link to="/AboutMe">About Me</Link>
-            <Link to="/mock-draft">Mock Draft</Link>
+            <a href="login">Login</a>
+            <a href="register">Register</a>
+            <a href="AboutMe">About Me</a>
+            <a href="mock-draft">Mock Draft</a>
           </>
         )}
       </nav>
