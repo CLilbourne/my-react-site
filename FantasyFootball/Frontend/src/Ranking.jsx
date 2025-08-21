@@ -56,6 +56,7 @@ function Ranking() {
   };
   return (
     <div>
+    <div style={{ marginBottom: "1rem" }}></div>
       <div style={{ display: "flex", gap: 40 }}>
         <div className="draftPlayers" style={{ flex: 1 }}>
           {availablePlayers.length === 0 && <p>Server Down</p>}
