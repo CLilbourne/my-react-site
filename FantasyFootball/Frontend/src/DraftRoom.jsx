@@ -79,6 +79,7 @@ function DraftRoom() {
           placeholder="Search by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
         />
 
         <select  className="position-select" value={filterPos} onChange={(e) => setFilterPos(e.target.value)}>
