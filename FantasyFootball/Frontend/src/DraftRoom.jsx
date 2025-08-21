@@ -17,7 +17,7 @@ function DraftRoom() {
       }
     }, [username, navigate]);
     if (!username) return null;
-    
+
   const [players, setPlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPos, setFilterPos] = useState("ALL");
@@ -94,6 +94,7 @@ function DraftRoom() {
         {filteredPlayers.map((player) => (
           <PlayerItem
             key={player.id}
+            index={index + 1} // global rank
             player={player}
             primaryButton={{
               label: "Gone",
