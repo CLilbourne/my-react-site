@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PlayerItem from "./PlayerItem";
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png";
@@ -6,8 +6,7 @@ import { BACKEND_URL } from "./shared";
 import { USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS } from "./Global";
 import normalizeName from "./helpers";
 
-// DnD imports
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { IonList, IonReorderGroup, IonReorder, IonItem } from "@ionic/react";
 
 function Ranking() {
   const [availablePlayers, setAvailablePlayers] = useState([]);
@@ -15,7 +14,12 @@ function Ranking() {
   const [currentPickIndex, setCurrentPickIndex] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState(0);
 
-  // Fetch players + merge ADP, sort by ADP
+  // placeholder to avoid ReferenceError if not wired yet
+  const draftPlayer = useCallback((player) => {
+    // TODO: implement or pass as prop
+    console.log("draft", player.fullName);
+  }, []);
+
   useEffect(() => {
     fetch(`${BACKEND_URL}/NflPlayers`)
       .then((res) => {
@@ -39,13 +43,19 @@ function Ranking() {
       .catch(console.error);
   }, []);
 
-  // Handle drag end (reorder players)
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return; // dropped outside the list
-    const items = Array.from(availablePlayers);
-    const [reordered] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reordered);
-    setAvailablePlayers(items);
+  const handleReorderEnd = (event) => {
+    const from = event.detail.from;
+    const to = event.detail.to;
+
+    setAvailablePlayers((prev) => {
+      const updated = [...prev];
+      const [moved] = updated.splice(from, 1);
+      updated.splice(to, 0, moved);
+
+      // Tell Ionic the new order so DOM & data stay in sync
+      event.detail.complete(updated);
+      return updated;
+    });
   };
 
   return (
@@ -55,45 +65,24 @@ function Ranking() {
           {availablePlayers.length === 0 && <p>No players left / Server Down</p>}
           {availablePlayers.length === 0 && <img src={mockdraft} alt="mockdraft" />}
 
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="players">
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{ overflowY: "auto", padding: 0 }}
-                >
-                  {availablePlayers.map((player, index) => (
-                    <Draggable key={player.id} draggableId={String(player.id)} index={index}>
-                      {(provided) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            ...provided.draggableProps.style,
-                            listStyle: "none",
-                            marginBottom: "8px",
-                          }}
-                        >
-                          {draftPickOrder[currentPickIndex] === selectedTeam ? (
-                            <PlayerItem
-                              player={player}
-                              buttonLabel="Draft"
-                              onButtonClick={() => draftPlayer(player)}
-                            />
-                          ) : (
-                            <PlayerItem player={player} />
-                          )}
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <IonList style={{ overflowY: "auto", padding: 0, maxHeight: "75vh" }}>
+            <IonReorderGroup disabled={false} onIonReorderEnd={handleReorderEnd}>
+              {availablePlayers.map((player, index) => (
+                <IonItem key={player.id ?? index} lines="none">
+                  {draftPickOrder[currentPickIndex] === selectedTeam ? (
+                    <PlayerItem
+                      player={player}
+                      buttonLabel="Draft"
+                      onButtonClick={() => draftPlayer(player)}
+                    />
+                  ) : (
+                    <PlayerItem player={player} />
+                  )}
+                  <IonReorder slot="end" />
+                </IonItem>
+              ))}
+            </IonReorderGroup>
+          </IonList>
         </div>
       </div>
     </div>
