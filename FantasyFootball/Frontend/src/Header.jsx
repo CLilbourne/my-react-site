@@ -16,8 +16,12 @@ function Header() {
       <nav className="header-nav">
         {username ? (
           // ✅ Logged in: show username linking to Welcome
-          <a href="/welcome">{username}</a>
-          
+          <>
+          <a href="/welcome">{username.toUpperCase()}</a>
+          <a href="AboutMe">About Me</a>
+          <a href="mock-draft">Mock Draft</a>
+
+          </>
         ) : (
           // ❌ Not logged in: show original nav
           <>
