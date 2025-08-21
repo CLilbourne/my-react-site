@@ -11,11 +11,6 @@ import normalizeName from "./helpers"
 function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
-  const [teams, setTeams] = useState(Array.from({ length: NUM_TEAMS }, () => []));
-  const [draftedPlayers, setDraftedPlayers] = useState([]);
-  const [draftPickOrder, setDraftPickOrder] = useState([]);
-  const [currentPickIndex, setCurrentPickIndex] = useState(0);
-  const [timer, setTimer] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(0);
 
 
