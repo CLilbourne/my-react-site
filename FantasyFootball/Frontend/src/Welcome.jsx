@@ -43,7 +43,7 @@ function Welcome() {
           Create League
         </button>
         <button className="welcomebuttons" onClick={handleJoinLeague}>
-          Draftroom
+          Draft Room
         </button>
         <button className="welcomebuttons" onClick={handleCurrentLeagues}>
           Ranking
