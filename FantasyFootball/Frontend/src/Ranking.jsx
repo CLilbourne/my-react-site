@@ -174,27 +174,6 @@ draftPlayer(playerToDraft);
 
   return (
     <div>
-      <div style={{ marginBottom: "1rem" }}>
-        <h3 style={{ color: "white" }}>⏱️ Time remaining: {timer ?? "-" }s</h3>
-         <label style={{ color: "white" }}>
-          Select your team slot:{" "}
-          <select
-            value={selectedTeam}
-            onChange={(e) => setSelectedTeam(Number(e.target.value))}
-            style={{ marginLeft: 8 }}
-          >
-            {[...Array(NUM_TEAMS).keys()].map((team) => (
-              <option key={team} value={team}>
-                Team {team + 1}
-              </option>
-            ))}
-          </select>
-        </label>
-        <SnakeDraft draftedPlayers={draftedPlayers} draftOrder={draftPickOrder} numTeams={NUM_TEAMS} />
-        {draftComplete && <p style={{ color: "lightgreen" }}>Draft Complete!</p>}
-
-      </div>
-
       <div style={{ display: "flex", gap: 40 }}>
 
         <div className="draftPlayers" style={{ flex: 1 }}>
