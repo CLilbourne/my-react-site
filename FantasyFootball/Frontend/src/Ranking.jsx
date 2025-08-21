@@ -1,10 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PlayerItem from "./PlayerItem";
-import SnakeDraft from "./SnakeDraft";
+
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
 import {USER_TIMER_DURATION, AI_TIMER_DURATION, NUM_TEAMS, TOTAL_ROUNDS} from "./Global"
+
+function normalizeName(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+jr\.?$/i, "")
+    .replace(/\./g, "")
+    .trim();
+}
+
 function Ranking() {
    // State declarations
   const [availablePlayers, setAvailablePlayers] = useState([]);
