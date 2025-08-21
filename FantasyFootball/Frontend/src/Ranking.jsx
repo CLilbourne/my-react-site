@@ -64,6 +64,7 @@ function Ranking() {
             {availablePlayers.map((player) => (
               <PlayerItem
                 key={player.id}
+                index = {index+1}
                 player={player}
                 primaryButton={{
                   label: "Up",
