@@ -65,7 +65,7 @@ function Ranking() {
                 <PlayerItem
                 key={player.id}
                 player={player}
-                index={index + 1} // Pass current position
+                index={index + 1} // <-- This will display the number
                 primaryButton={{
                     label: "Up",
                     onClick: () => movePlayerUp(player),
