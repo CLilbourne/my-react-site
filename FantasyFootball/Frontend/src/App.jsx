@@ -38,6 +38,12 @@ function App() {
                 <MockDraft/>
               </div>} />
         </Routes>
+        <Route 
+            path='/ranking' 
+            element={<div className="main-content" style={{ padding: 20 }}>
+                <Ranking/>
+              </div>} />
+
       </BrowserRouter>
       <Footer />
     </div>
