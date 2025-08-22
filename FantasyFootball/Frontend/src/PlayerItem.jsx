@@ -9,7 +9,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
   return (
     <li
       className="player-card"
-      style={{ display: "flex", alignItems: "center", gap: "10px", background}}
+      style={{ display: "flex", alignItems: "center", background}}
     >
       {/* Global rank number before the photo */}
       {typeof index === "number" && (
