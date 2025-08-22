@@ -23,7 +23,9 @@
   box-shadow: 2px 4px 12px rgba(0,0,0,0.1);
   background: rgb(38, 56, 90);
 }
-
+.player-card div span {
+  margin: 0;
+}
 .player-card button {
   background: linear-gradient(90deg, rgb(22, 34, 56), rgb(21, 23, 44));
   border: none;
