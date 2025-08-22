@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./header.css";
 
 function Header() {
   const [username, setUsername] = useState(null);
-  const navigate = useNavigate();
 
   // Load user from localStorage
   useEffect(() => {
@@ -15,10 +14,10 @@ function Header() {
   }, []);
 
   const handleLogout = () => {
-  localStorage.removeItem("user");
-  setUsername(null);
-  window.location.href = "/login"; // fallback redirect
-};
+    localStorage.removeItem("user");
+    setUsername(null);
+    window.location.href = "/login"; // redirect after logout
+  };
 
   return (
     <header className="header">
