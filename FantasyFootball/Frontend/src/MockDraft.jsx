@@ -240,8 +240,6 @@ export default function Draft() {
     <div>
       <div style={{ marginBottom: "1rem" }}>
         <h3 style={{ color: "white" }}>⏱️ Time remaining: {timer ?? "-"}s</h3>
-        <label style={{ color: "white" }}>
-          Select your team slot:{" "}
           <select className= "position-select"
             value={selectedTeam ?? ""}
             onChange={(e) => setSelectedTeam(Number(e.target.value))}
@@ -256,7 +254,6 @@ export default function Draft() {
               </option>
             ))}
           </select>
-        </label>
         <SnakeDraft
           draftedPlayers={draftedPlayers}
           draftOrder={draftPickOrder}
