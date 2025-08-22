@@ -113,6 +113,7 @@ function DraftRoom() {
             key={player.id}
             index={index + 1} // global rank
             player={player}
+            positionalRank={player.positionRank}
             primaryButton={{
               label: "Gone",
               onClick: () => markGone(player),
