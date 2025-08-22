@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./signup.css";
-import { BACKEND_URL } from "./shared"
+import { BACKEND_URL } from "./shared";
+import bcrypt from "bcryptjs"; // ✅ import bcrypt
 
 function SignUp() {
   const [form, setForm] = useState({
@@ -15,39 +16,42 @@ function SignUp() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { name, email, password, confirmPassword } = form;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = form;
 
-  if (!name || !email || !password || !confirmPassword) {
-    return setError("All fields are required.");
-  }
-  if (password.length < 6) {
-    return setError("Password must be at least 6 characters.");
-  }
-  if (password !== confirmPassword) {
-    return setError("Passwords do not match.");
-  }
-
-  try {
-    const res = await fetch(`${BACKEND_URL}/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error || "Signup failed.");
-    } else {
-      alert("Signup successful!");
+    if (!name || !email || !password || !confirmPassword) {
+      return setError("All fields are required.");
     }
-  } catch (err) {
-    setError("Server error. Try again later.");
-    console.error(err);
-  }
-};
+    if (password.length < 6) {
+      return setError("Password must be at least 6 characters.");
+    }
+    if (password !== confirmPassword) {
+      return setError("Passwords do not match.");
+    }
+
+    try {
+      // ✅ Hash password before sending
+      const hashedPassword = bcrypt.hashSync(password, 10);
+
+      const res = await fetch(`${BACKEND_URL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password: hashedPassword }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Signup failed.");
+      } else {
+        alert("Signup successful!");
+      }
+    } catch (err) {
+      setError("Server error. Try again later.");
+      console.error(err);
+    }
+  };
 
   return (
     <div className="signup-wrapper">
@@ -55,47 +59,14 @@ function SignUp() {
         <h2 className="signup-title">Create an Account</h2>
         {error && <div className="signup-error">{error}</div>}
         <form onSubmit={handleSubmit} className="signup-form">
-          <input
-            type="text"
-            name="name"
-            placeholder="Username"
-            value={form.name}
-            onChange={handleChange}
-            className="signup-input"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="signup-input"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="signup-input"
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            className="signup-input"
-          />
-          <button type="submit" className="signup-button">
-            Sign Up
-          </button>
+          <input type="text" name="name" placeholder="Username" value={form.name} onChange={handleChange} className="signup-input" />
+          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="signup-input" />
+          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="signup-input" />
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} className="signup-input" />
+          <button type="submit" className="signup-button">Sign Up</button>
         </form>
         <p className="signup-footer">
-          Already have an account?{" "}
-          <a href="/login" className="signup-link">
-            Login
-          </a>
+          Already have an account? <a href="/login" className="signup-link">Login</a>
         </p>
       </div>
     </div>

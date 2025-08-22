@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "gsap": "^3.13.0",
     "lucide-react": "^0.511.0",
     "ogl": "^1.0.11",

@@ -36,57 +36,58 @@ async function startServer() {
 
     // SIGNUP route
     app.post('/signup', async (req, res) => {
-      try {
-        const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-        if (!name || !email || !password) {
-          return res.status(400).json({ error: 'Name, email, and password are required' });
-        }
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
 
-        const existingUser = await db.collection('UserData').findOne({ email });
-        if (existingUser) {
-          return res.status(409).json({ error: 'User with this email already exists' });
-        }
+    const existingUser = await db.collection('UserData').findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ error: 'User with this email already exists' });
+    }
 
-        const result = await db.collection('UserData').insertOne({ name, email, password });
-        res.status(201).json({ message: 'User created', userId: result.insertedId });
-      } catch (err) {
-        console.error('Signup failed:', err);
-        res.status(500).json({ error: 'Signup failed' });
-      }
-    });
+    // ✅ Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const result = await db.collection('UserData').insertOne({ name, email, password: hashedPassword });
+    res.status(201).json({ message: 'User created', userId: result.insertedId });
+  } catch (err) {
+    console.error('Signup failed:', err);
+    res.status(500).json({ error: 'Signup failed' });
+  }
+});
 
     // LOGIN route
     app.post('/login', async (req, res) => {
-      let { email, password } = req.body;
+  let { email, password } = req.body;
 
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password required.' });
-      }
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password required.' });
+  }
 
-      email = email.trim().toLowerCase();
+  email = email.trim().toLowerCase();
 
-      try {
-        const user = await db.collection('UserData').findOne({ email });
+  try {
+    const user = await db.collection('UserData').findOne({ email });
 
-        console.log('Found user:', user);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
 
-        if (!user) {
-          console.log('User not found');
-          return res.status(401).json({ error: 'Invalid email or password.' });
-        }
+    // ✅ Compare hashed password
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
 
-        if (user.password !== password) {
-          console.log('Password mismatch');
-          return res.status(401).json({ error: 'Invalid email or password.' });
-        }
-
-        res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
-      } catch (err) {
-        console.error('Login error:', err);
-        res.status(500).json({ error: 'Internal server error' });
-      }
-    });
+    res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
     // ========== NEW RANKINGS ROUTES ==========
 
