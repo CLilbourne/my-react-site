@@ -66,24 +66,22 @@ function DraftRoom() {
 
     fetchPlayers();
     }, [username]);
-  const getPlayersWithPositionalRanks = () => {
-    const positionCounters = {}; // e.g. { WR: 1, RB: 1 }
-    return availablePlayers.map((player) => {
-      const pos = player.position;
-      if (!positionCounters[pos]) positionCounters[pos] = 1;
-      const rank = positionCounters[pos]++;
-      return { ...player, positionRank: `${pos}${rank}` };
-    });
-  };
-
-  // ✅ Filtering logic (same as DraftRoom)
-  const filteredPlayers = getPlayersWithPositionalRanks().filter((p) => {
-    const matchesSearch = p.fullName
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesPos = filterPos === "ALL" || p.position === filterPos;
-    return matchesSearch && matchesPos;
+    
+  const getPlayersWithPositionalRanks = (playerList) => {
+  const positionCounters = {};
+  return playerList.map((player) => {
+    const pos = player.position;
+    if (!positionCounters[pos]) positionCounters[pos] = 1;
+    const rank = positionCounters[pos]++;
+    return { ...player, positionRank: `${pos}${rank}` };
   });
+};
+  // Filtering logic
+  const filteredPlayers = getPlayersWithPositionalRanks(players).filter((p) => {
+  const matchesSearch = p.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPos = filterPos === "ALL" || p.position === filterPos;
+  return matchesSearch && matchesPos;
+});
 
   // Button actions
   const markGone = (player) => {
