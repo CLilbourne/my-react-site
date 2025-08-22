@@ -15,10 +15,10 @@ function Header() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUsername(null);
-    navigate("/login");
-  };
+  localStorage.removeItem("user");
+  setUsername(null);
+  window.location.href = "/login"; // fallback redirect
+};
 
   return (
     <header className="header">
