@@ -7,10 +7,10 @@
   border-width: 3px;
   border-radius: 5px;
   border-color:  rgb(37, 49, 77);
-  max-height: 20px;
+
   font-size: 12px;
   padding: 2px 20px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   display: flex;
   justify-content: space-between;
   align-items: center;
