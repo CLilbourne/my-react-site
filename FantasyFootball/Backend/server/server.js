@@ -38,18 +38,21 @@ async function startServer() {
     // SIGNUP route
     app.post('/signup', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are required' });
     }
+
+    // Normalize email
+    email = email.trim().toLowerCase();
 
     const existingUser = await db.collection('UserData').findOne({ email });
     if (existingUser) {
       return res.status(409).json({ error: 'User with this email already exists' });
     }
 
-    // ✅ Hash the password
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await db.collection('UserData').insertOne({ name, email, password: hashedPassword });
