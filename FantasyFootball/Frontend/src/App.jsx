@@ -12,10 +12,10 @@ import DraftRoom from './DraftRoom'
 
 function App() {
   return (
+    <BrowserRouter>
     <div className='page-container'>
       <title>HireConnor.org</title>
       <Header />
-      <BrowserRouter>
         <Routes>
           <Route path='/register' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
@@ -50,9 +50,10 @@ function App() {
                 <DraftRoom/>
               </div>} />
         </Routes>
-      </BrowserRouter>
       <Footer />
+      
     </div>
+    </BrowserRouter>
   );
 }
 
