@@ -100,7 +100,7 @@ function DraftRoom() {
       <h1>{username}'s Draft Room</h1>
 
       {/* Search + Filter Controls */}
-      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+      <div style={{ marginBottom: "1rem", display: "flex"}}>
         <input
           type="text"
           placeholder="Search by name..."
