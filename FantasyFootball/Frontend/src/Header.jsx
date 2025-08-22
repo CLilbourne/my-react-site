@@ -36,6 +36,8 @@ function Header() {
         {username ? (
           <>
             <Link to="/mock-draft">Mock Draft</Link>
+            <Link to="/draft-room">Draft Room</Link>
+            <Link to="/ranking">Rankings</Link>
             <Link to="/welcome">{username.toUpperCase()}</Link>
             <Link className="logout-link" onClick={handleLogout} to="/login">Log Out</Link>
           </>

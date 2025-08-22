@@ -30,6 +30,10 @@
   padding: 10px;
 }
 
+.logout-link{
+  font-weight: bold;
+}
+
 .header-nav {
   display: flex;
   gap: 24px;
