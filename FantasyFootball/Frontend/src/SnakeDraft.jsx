@@ -4,7 +4,8 @@ import "./SnakeDraft.css"
 import { positionColors, teamAbbreviations } from "./playerData";
 import reactIcon from './assets/react.svg';
 
-export default function SnakeDraft({ draftedPlayers, numTeams }) {
+
+export default function SnakeDraft({ draftedPlayers, numTeams, TOTAL_ROUNDS}) {
   // Helper: return team index based on snake pattern
   function getTeamIndex(pickIndex) {
     const round = Math.floor(pickIndex / numTeams);
@@ -31,7 +32,7 @@ export default function SnakeDraft({ draftedPlayers, numTeams }) {
           <div className="TeamTitleSnake"><img style={{ width: 30, height: 30}} src={reactIcon} alt="icon" />Team {i + 1}</div>
           
           <div className="SnakeCard">
-            {[...Array(15)].map((_, index) => {
+            {[...Array(TOTAL_ROUNDS)].map((_, index) => {
               const player = team[index]; // get player at pick index, if any
               const globalPickNumber = i + 1  + index * 12;
               return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import PlayerItem from "./PlayerItem";
 import SnakeDraft from "./SnakeDraft";
+import "./DraftRoom.css"
 import adpData from "./assets/adp.json";
 import mockdraft from "./assets/mockdraft.png"
 import { BACKEND_URL } from "./shared"
@@ -241,7 +242,7 @@ export default function Draft() {
         <h3 style={{ color: "white" }}>⏱️ Time remaining: {timer ?? "-"}s</h3>
         <label style={{ color: "white" }}>
           Select your team slot:{" "}
-          <select
+          <select className= "position-select"
             value={selectedTeam ?? ""}
             onChange={(e) => setSelectedTeam(Number(e.target.value))}
             style={{ marginLeft: 8 }}
@@ -260,6 +261,7 @@ export default function Draft() {
           draftedPlayers={draftedPlayers}
           draftOrder={draftPickOrder}
           numTeams={NUM_TEAMS}
+          TOTAL_ROUNDS={TOTAL_ROUNDS}
         />
         {draftComplete && <p style={{ color: "lightgreen" }}>Draft Complete!</p>}
       </div>
