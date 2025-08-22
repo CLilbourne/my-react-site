@@ -1,45 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
 import "./header.css";
 
 function Header() {
-  const [username, setUsername] = useState(null);
-
-  // Load user from localStorage on mount
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.name) {
-      setUsername(storedUser.name);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUsername(null);
-  };
+  // ✅ Get user from localStorage (same as in DraftRoom)
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const username = storedUser?.name; // may be undefined if not logged in
 
   return (
     <header className="header">
       <div className="header-left">
-        <div className="header-title">
-          <Link to="/">HireConnor.org</Link>
-        </div>
+        <div className="header-title"><a href="/">HireConnor.org</a> </div>
       </div>
 
       <nav className="header-nav">
         {username ? (
-          <div className="header-nav-items">
-            <Link to="/mock-draft">Mock bDraft</Link>
-            <Link to="/welcome">{username.toUpperCase()}</Link>
-            <button className="logout-btn" onClick={handleLogout}>
-              Logout
-            </button>
-          </div>
+          // ✅ Logged in: show username linking to Welcome
+          <>
+          <a href="mock-draft">Mock Draft</a>
+          <a href="/welcome">{username.toUpperCase()}</a>
+          </>
         ) : (
-          <div className="header-nav-items">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </div>
+          // ❌ Not logged in: show original nav
+          <>
+            <a href="login">Login</a>
+            <a href="register">Register</a>
+            <a href="mock-draft">Mock Draft</a>
+          </>
         )}
       </nav>
     </header>
