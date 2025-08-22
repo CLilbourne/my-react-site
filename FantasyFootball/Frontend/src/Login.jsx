@@ -41,7 +41,7 @@ function Login() {
 
         // ✅ persist user info in localStorage so refresh doesn’t lose it
         localStorage.setItem("user", JSON.stringify(data.user));
-
+        window.dispatchEvent(new Event("storageUpdated"));
         // ✅ navigate without needing to pass username in state anymore
         navigate("/welcome");
       }
