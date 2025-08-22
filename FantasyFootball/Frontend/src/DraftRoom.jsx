@@ -120,7 +120,7 @@ function DraftRoom() {
         {filteredPlayers.map((player, index) => (
           <PlayerItem
             key={player.id}
-            index={index + 1} // global rank
+            index={players.findIndex((p) => p.id === player.id) + 1}// global rank
             player={player}
             positionalRank={player.positionRank}
             primaryButton={{
