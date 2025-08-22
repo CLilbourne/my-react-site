@@ -116,15 +116,14 @@ function DraftRoom() {
           <option value="WR">WR</option>
           <option value="TE">TE</option>
         </select>
-      </div>
- 
-          <select className="position-select"
-            value={showGone ? "yes" : "no"}
+         <select className="position-select"
+            value={showGone ? "Show Gone" : "Don't Show"}
             onChange={(e) => setShowGone(e.target.value === "yes")}
           >
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
+      </div>
 
       {/* Player List */}
       <ul style={{ listStyle: "none", padding: 0 }}>
