@@ -35,9 +35,6 @@ function Welcome() {
     <div style={{ textAlign: "center", padding: "2rem", color: "white" }}>
       <h1>Welcome, {username}!</h1>
       <div style={{ marginTop: "2rem" }}>
-        <button className="welcomebuttons" onClick={handleCreateLeague}>
-          Create League
-        </button>
         <button className="welcomebuttons" onClick={handleJoinLeague}>
           Draft Room
         </button>
