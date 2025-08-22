@@ -37,9 +37,7 @@ function Header() {
           <>
             <Link to="/mock-draft">Mock Draft</Link>
             <Link to="/welcome">{username.toUpperCase()}</Link>
-            <a href="#" className="logout-link" onClick={handleLogout}>
-              Logout
-            </a>
+            <Link className="logout-link" onClick={handleLogout} to="/login">Log Out</Link>
           </>
         ) : (
           <>
