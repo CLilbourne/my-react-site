@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
-
+import bcrypt from 'bcrypt';
 dotenv.config({ path: './a.env' });
 
 const app = express();
@@ -32,27 +32,38 @@ async function startServer() {
       }
     });
 
-    // SIGNUP route
-    app.post('/signup', async (req, res) => {
-      try {
-        const { name, email, password } = req.body;
 
-        if (!name || !email || !password) {
-          return res.status(400).json({ error: 'Name, email, and password are required' });
-        }
+const SALT_ROUNDS = 10; // the higher, the stronger but slower
 
-        const existingUser = await db.collection('UserData').findOne({ email });
-        if (existingUser) {
-          return res.status(409).json({ error: 'User with this email already exists' });
-        }
+// SIGNUP route
+app.post('/signup', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
 
-        const result = await db.collection('UserData').insertOne({ name, email, password });
-        res.status(201).json({ message: 'User created', userId: result.insertedId });
-      } catch (err) {
-        console.error('Signup failed:', err);
-        res.status(500).json({ error: 'Signup failed' });
-      }
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
+
+    const existingUser = await db.collection('UserData').findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ error: 'User with this email already exists' });
+    }
+
+    // ✅ Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
+    const result = await db.collection('UserData').insertOne({ 
+      name, 
+      email: email.toLowerCase().trim(), 
+      password: hashedPassword 
     });
+
+    res.status(201).json({ message: 'User created', userId: result.insertedId });
+  } catch (err) {
+    console.error('Signup failed:', err);
+    res.status(500).json({ error: 'Signup failed' });
+  }
+});
 
     // LOGIN route
   app.post('/login', async (req, res) => {
@@ -65,25 +76,24 @@ async function startServer() {
   email = email.trim().toLowerCase();
 
   try {
-  const user = await db.collection('UserData').findOne({ email });
+    const user = await db.collection('UserData').findOne({ email });
 
-  console.log('Found user:', user);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
 
-  if (!user) {
-    console.log('User not found');
-    return res.status(401).json({ error: 'Invalid email or password.' });
+    // ✅ Compare password with hashed version
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
+
+    res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-  if (user.password !== password) {
-    console.log('Password mismatch');
-    return res.status(401).json({ error: 'Invalid email or password.' });
-  }
-
-  res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
-} catch (err) {
-  console.error('Login error:', err);
-  res.status(500).json({ error: 'Internal server error' });
-}
 });
   // ========== NEW RANKINGS ROUTES ==========
 
