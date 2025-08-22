@@ -85,6 +85,39 @@ async function startServer() {
   res.status(500).json({ error: 'Internal server error' });
 }
 });
+  // ========== NEW RANKINGS ROUTES ==========
+
+    // ✅ Save or update a user's rankings
+    app.post('/saveRankings', async (req, res) => {
+      const { username, rankings } = req.body;
+
+      if (!username || !Array.isArray(rankings)) {
+        return res.status(400).json({ error: 'Invalid payload' });
+      }
+
+      try {
+        await db.collection('Rankings').updateOne(
+          { username },                     // find by username
+          { $set: { rankings } },           // save rankings array (player ids or objects)
+          { upsert: true }                  // create doc if doesn't exist
+        );
+        res.json({ success: true });
+      } catch (err) {
+        console.error('Error saving rankings:', err);
+        res.status(500).json({ error: 'Failed to save rankings' });
+      }
+    });
+
+    // ✅ Get a user's rankings
+    app.get('/getRankings/:username', async (req, res) => {
+      try {
+        const doc = await db.collection('Rankings').findOne({ username: req.params.username });
+        res.json(doc?.rankings || []); // return rankings array or []
+      } catch (err) {
+        console.error('Error fetching rankings:', err);
+        res.status(500).json({ error: 'Failed to fetch rankings' });
+      }
+    });
 
     // Server start
     const PORT = process.env.PORT || 3001;
