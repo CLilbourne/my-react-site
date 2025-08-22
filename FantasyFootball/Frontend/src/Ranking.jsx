@@ -157,7 +157,7 @@ function Ranking() {
       </div>
 
       <div style={{ display: "flex", gap: 40 }}>
-        <div className="draftPlayers" style={{ flex: 1, paddingTop: 15}}>
+        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8}}>
           {filteredPlayers.length === 0 && <p>No players found...</p>}
 
           <ul style={{ overflowY: "auto", padding: 0 }}>

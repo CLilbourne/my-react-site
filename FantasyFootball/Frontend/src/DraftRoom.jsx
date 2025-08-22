@@ -126,7 +126,7 @@ function DraftRoom() {
       </div>
 
       {/* Player List */}
-      <div className="draftPlayers" style={{ flex: 1, paddingTop: 15 }}>
+      <div className="draftPlayers" style={{ flex: 1, paddingTop: 8}}>
       <ul style={{ listStyle: "none", padding: 0 }}>
         {filteredPlayers.map((player, index) => (
           <PlayerItem
