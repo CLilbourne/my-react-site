@@ -117,11 +117,11 @@ function DraftRoom() {
           <option value="TE">TE</option>
         </select>
          <select className="position-select"
-            value={showGone ? "Show Gone" : "Don't Show"}
+            value={showGone ? "yes" : "no"}
             onChange={(e) => setShowGone(e.target.value === "yes")}
           >
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
+            <option value="yes">Show Selected</option>
+            <option value="no">Don't Show</option>
           </select>
       </div>
 
