@@ -39,7 +39,6 @@ function Header() {
           <div className="header-nav-items">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
-            <Link to="/mock-draft">Mock Draft</Link>
           </div>
         )}
       </nav>
