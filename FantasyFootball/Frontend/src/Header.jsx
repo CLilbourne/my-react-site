@@ -7,17 +7,22 @@ function Header() {
 
   // Load user from localStorage
   useEffect(() => {
+  const updateUsername = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (storedUser?.name) {
-      setUsername(storedUser.name);
-    }
-  }, []);
+    setUsername(storedUser?.name || null);
+  };
+
+  updateUsername(); // initial load
+
+  window.addEventListener("storageUpdated", updateUsername);
+  return () => window.removeEventListener("storageUpdated", updateUsername);
+}, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUsername(null);
-    window.location.href = "/login"; // redirect after logout
-  };
+  localStorage.removeItem("user");
+  setUsername(null);
+  window.dispatchEvent(new Event("storageUpdated"));
+};
 
   return (
     <header className="header">
