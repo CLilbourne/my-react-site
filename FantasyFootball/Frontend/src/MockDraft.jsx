@@ -35,7 +35,7 @@ export default function Draft() {
   const [draftPickOrder, setDraftPickOrder] = useState([]);
   const [currentPickIndex, setCurrentPickIndex] = useState(0);
   const [timer, setTimer] = useState(null);
-  const [selectedTeam, setSelectedTeam] = useState(0);
+  const [selectedTeam, setSelectedTeam] = useState(null);
 
   const draftComplete = currentPickIndex >= draftPickOrder.length;
 
@@ -145,22 +145,20 @@ export default function Draft() {
 
   // Timer and auto-draft effect
   useEffect(() => {
-    if (draftComplete) return;
+  if (draftComplete) return;
+  if (selectedTeam === null) return; // ⏸️ Pause until team is picked
 
-    // On pick change or timer reset, set initial timer if null
-    if (timer === null) {
-      const currentTeam = draftPickOrder[currentPickIndex];
-      setTimer(currentTeam === selectedTeam ? USER_TIMER_DURATION : AI_TIMER_DURATION);
-      return;
-    }
+  if (timer === null) {
+    const currentTeam = draftPickOrder[currentPickIndex];
+    setTimer(currentTeam === selectedTeam ? USER_TIMER_DURATION : AI_TIMER_DURATION);
+    return;
+  }
 
-    // Auto draft if timer hits zero
-    if (timer <= 0) {
-      // ✅ Bots choose from ADP list only
-      if (adpPlayers.length === 0) return;
+  if (timer <= 0) {
+    if (adpPlayers.length === 0) return;
 
-      const teamIndex = draftPickOrder[currentPickIndex];
-      if (teamIndex === undefined) return;
+    const teamIndex = draftPickOrder[currentPickIndex];
+    if (teamIndex === undefined) return;
 
       // Get current team players
       const currentTeamPlayers = teams[teamIndex] || [];
@@ -220,21 +218,19 @@ export default function Draft() {
     }
 
     // Countdown timer every second
-    const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
+     const interval = setInterval(() => {setTimer((prev) => prev - 1);}, 1000);
 
-    return () => clearInterval(interval);
-  }, [
-    timer,
-    draftComplete,
-    currentPickIndex,
-    draftPickOrder,
-    selectedTeam,
-    adpPlayers, // ✅ bots use this list
-    teams,
-    draftPlayer,
-  ]);
+      return () => clearInterval(interval);
+    }, [
+      timer,
+      draftComplete,
+      currentPickIndex,
+      draftPickOrder,
+      selectedTeam,
+      adpPlayers,
+      teams,
+      draftPlayer,
+    ]);
 
   // ✅ The list you see is always your ranked order
   const displayPlayers = userPlayers;
@@ -246,10 +242,13 @@ export default function Draft() {
         <label style={{ color: "white" }}>
           Select your team slot:{" "}
           <select
-            value={selectedTeam}
+            value={selectedTeam ?? ""}
             onChange={(e) => setSelectedTeam(Number(e.target.value))}
             style={{ marginLeft: 8 }}
           >
+            <option value="" disabled>
+              -- Select a team --
+            </option>
             {[...Array(NUM_TEAMS).keys()].map((team) => (
               <option key={team} value={team}>
                 Team {team + 1}
