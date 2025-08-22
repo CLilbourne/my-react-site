@@ -100,7 +100,7 @@ function DraftRoom() {
       <h1>{username}'s Draft Room</h1>
 
       {/* Search + Filter Controls */}
-      <div style={{ marginBottom: "1rem", display: "flex"}}>
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
         <input
           type="text"
           placeholder="Search by name..."
@@ -126,6 +126,7 @@ function DraftRoom() {
       </div>
 
       {/* Player List */}
+      <div className="draftPlayers" style={{ flex: 1 }}>
       <ul style={{ listStyle: "none", padding: 0 }}>
         {filteredPlayers.map((player, index) => (
           <PlayerItem
@@ -145,6 +146,7 @@ function DraftRoom() {
           />
         ))}
       </ul>
+      </div>
     </div>
   );
 }
