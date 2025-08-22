@@ -117,8 +117,7 @@ function DraftRoom() {
           <option value="TE">TE</option>
         </select>
       </div>
-      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
-        <label>
+      <label>
           Show Gone Players: 
           <select
             value={showGone ? "yes" : "no"}
@@ -128,7 +127,6 @@ function DraftRoom() {
             <option value="no">No</option>
           </select>
         </label>
-      </div>
 
       {/* Player List */}
       <ul style={{ listStyle: "none", padding: 0 }}>
