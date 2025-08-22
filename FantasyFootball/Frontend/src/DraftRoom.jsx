@@ -22,7 +22,8 @@ function DraftRoom() {
   const [players, setPlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPos, setFilterPos] = useState("ALL");
-  const [status, setStatus] = useState({}); 
+  const [status, setStatus] = useState({});
+  const [showGone, setShowGone] = useState(true); // default: show all 
   // status = { playerId: "gone" | "got" }
 
     useEffect(() => {
@@ -77,11 +78,13 @@ function DraftRoom() {
   });
 };
   // Filtering logic
-  const filteredPlayers = getPlayersWithPositionalRanks(players).filter((p) => {
-  const matchesSearch = p.fullName.toLowerCase().includes(searchTerm.toLowerCase());
-  const matchesPos = filterPos === "ALL" || p.position === filterPos;
-  return matchesSearch && matchesPos;
-});
+  const filteredPlayers = getPlayersWithPositionalRanks(players)
+  .filter((p) => {
+    const matchesSearch = p.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesPos = filterPos === "ALL" || p.position === filterPos;
+    const matchesGone = showGone || status[p.id] !== "gone"; // ✅ hide gone if needed
+    return matchesSearch && matchesPos && matchesGone;
+  });
 
   // Button actions
   const markGone = (player) => {
@@ -113,6 +116,18 @@ function DraftRoom() {
           <option value="WR">WR</option>
           <option value="TE">TE</option>
         </select>
+      </div>
+      <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+        <label>
+          Show Gone Players: 
+          <select
+            value={showGone ? "yes" : "no"}
+            onChange={(e) => setShowGone(e.target.value === "yes")}
+          >
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
       </div>
 
       {/* Player List */}
