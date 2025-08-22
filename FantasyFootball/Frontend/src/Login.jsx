@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import "./signup.css";
+import "./signup.css"; // reuse same styles
 import { useNavigate } from "react-router-dom";
 import { BACKEND_URL } from "./shared";
-import bcrypt from "bcryptjs"; // ✅ import bcrypt
 
 function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // ✅ new: track loading state
   const navigate = useNavigate();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,15 +25,11 @@ function Login() {
     }
 
     try {
-      setLoading(true);
-
-      // ✅ Hash password before sending
-      const hashedPassword = bcrypt.hashSync(form.password, 10);
-
+      setLoading(true); // ✅ disable button + show loading state
       const res = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, password: hashedPassword }),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
       const data = await res.json();
@@ -37,15 +37,19 @@ function Login() {
       if (!res.ok) {
         setError(data.error || "Login failed");
       } else {
+        setError("");
+
+        // ✅ persist user info in localStorage so refresh doesn’t lose it
         localStorage.setItem("user", JSON.stringify(data.user));
         window.dispatchEvent(new Event("storageUpdated"));
+        // ✅ navigate without needing to pass username in state anymore
         navigate("/welcome");
       }
     } catch (err) {
       console.error("Login fetch error:", err);
       setError("Network error");
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ stop loading
     }
   };
 
@@ -55,14 +59,36 @@ function Login() {
         <h2 className="signup-title">Log In</h2>
         {error && <div className="signup-error">{error}</div>}
         <form onSubmit={handleSubmit} className="signup-form">
-          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="signup-input" />
-          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="signup-input" />
-          <button type="submit" className="signup-button" disabled={loading}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="signup-input"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="signup-input"
+          />
+          <button
+            type="submit"
+            className="signup-button"
+            disabled={loading} // ✅ prevent double submits
+          >
             {loading ? "Logging in..." : "Log In"}
           </button>
         </form>
         <p className="signup-footer">
-          Don&apos;t have an account? <a href="/register" className="signup-link">Sign Up</a>
+          Don&apos;t have an account?{" "}
+          {/* ✅ use Link instead of <a> to avoid page reload */}
+          <a href="/register" className="signup-link">
+            Sign Up
+          </a>
         </p>
       </div>
     </div>
