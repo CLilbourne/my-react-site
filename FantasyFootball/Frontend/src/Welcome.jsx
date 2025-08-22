@@ -19,10 +19,6 @@ function Welcome() {
 
   if (!username) return null;
 
-  const handleCreateLeague = () => {
-    navigate("/create-league", { state: { username } });
-  };
-
   const handleJoinLeague = () => {
     navigate("/draft-room", { state: { username } });
   };
