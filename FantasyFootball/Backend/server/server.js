@@ -61,27 +61,19 @@ async function startServer() {
 });
 
     // LOGIN route
-    app.post('/login', async (req, res) => {
-  let { email, password } = req.body;
+ app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password required.' });
   }
 
-  email = email.trim().toLowerCase();
-
   try {
-    const user = await db.collection('UserData').findOne({ email });
+    const user = await db.collection('UserData').findOne({ email: email.trim().toLowerCase() });
+    if (!user) return res.status(401).json({ error: 'Invalid email or password.' });
 
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
-
-    // ✅ Compare hashed password
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) return res.status(401).json({ error: 'Invalid email or password.' });
 
     res.json({ message: 'Login successful', user: { name: user.name, email: user.email } });
   } catch (err) {
