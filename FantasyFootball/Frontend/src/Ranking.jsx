@@ -5,7 +5,6 @@ import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
 import "./DraftRoom.css"; // reuse same styling for search/filter
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 function Ranking() {
   const location = useLocation();
@@ -18,7 +17,8 @@ function Ranking() {
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPos, setFilterPos] = useState("ALL");
-
+  const [rankings, setRankings] = useState(players);
+  
   // check username
   useEffect(() => {
     if (!username) {
@@ -81,16 +81,43 @@ function Ranking() {
     }).catch((err) => console.error("Error saving rankings:", err));
   };
 
-  // ✅ Drag end handler
+  // Move functions with save after update
+  const movePlayerUp = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index <= 0) return prevPlayers;
+      const newPlayers = [...prevPlayers];
+      [newPlayers[index - 1], newPlayers[index]] = [
+        newPlayers[index],
+        newPlayers[index - 1],
+      ];
+      saveRankings(newPlayers);
+      return newPlayers;
+    });
+  };
+
+  const movePlayerDown = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index >= prevPlayers.length - 1) return prevPlayers;
+      const newPlayers = [...prevPlayers];
+      [newPlayers[index + 1], newPlayers[index]] = [
+        newPlayers[index],
+        newPlayers[index + 1],
+      ];
+      saveRankings(newPlayers);
+      return newPlayers;
+    });
+  };
+  
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
-    const newPlayers = Array.from(availablePlayers);
-    const [reordered] = newPlayers.splice(result.source.index, 1);
-    newPlayers.splice(result.destination.index, 0, reordered);
+    const items = Array.from(rankings);
+    const [reordered] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reordered);
 
-    setAvailablePlayers(newPlayers);
-    saveRankings(newPlayers);
+    setRankings(items);
   };
 
   // ✅ Compute positional ranks dynamically
@@ -141,57 +168,29 @@ function Ranking() {
       </div>
 
       <div style={{ display: "flex", gap: 40 }}>
-        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8 }}>
+        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8}}>
           {filteredPlayers.length === 0 && <p>No players found...</p>}
 
-          <DragDropContext onDragEnd={handleOnDragEnd}>
-            <Droppable droppableId="players">
-              {(provided) => (
-                <ul
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={{ overflowY: "auto", padding: 0 }}
-                >
-                  {filteredPlayers.map((player, index) => (
-                    <Draggable
-                      key={player.id}
-                      draggableId={player.id.toString()}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <li
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps} // ✅ drag handle
-                          style={{
-                            ...provided.draggableProps.style,
-                            listStyle: "none",
-                            marginBottom: "8px",
-                            background: snapshot.isDragging
-                              ? "#f0f0f0"
-                              : "white",
-                            borderRadius: "8px",
-                            padding: "8px",
-                          }}
-                        >
-                          <PlayerItem
-                            player={player}
-                            index={
-                              availablePlayers.findIndex(
-                                (p) => p.id === player.id
-                              ) + 1
-                            }
-                            positionalRank={player.positionRank}
-                          />
-                        </li>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </ul>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <ul style={{ overflowY: "auto", padding: 0 }}>
+            {filteredPlayers.map((player, index) => (
+              <PlayerItem
+                key={player.id}
+                player={player}
+                // ✅ find the player's position in the full list (not just filtered)
+                index={availablePlayers.findIndex((p) => p.id === player.id) + 1}
+                positionalRank={player.positionRank}
+                primaryButton={{
+                  label: "Up",
+                  onClick: () => movePlayerUp(player),
+                }}
+                secondaryButton={{
+                  label: "Down",
+                  onClick: () => movePlayerDown(player),
+                }}
+              />
+
+            ))}
+          </ul>
         </div>
       </div>
     </div>
