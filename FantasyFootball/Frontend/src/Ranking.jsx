@@ -150,9 +150,9 @@ function Ranking() {
                 <ul
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  style={{ listStyle: "none", padding: 0 }} // no flex here
+                  style={{ overflowY: "auto", padding: 0 }}
                 >
-                  {players.map((player, index) => (
+                  {filteredPlayers.map((player, index) => (
                     <Draggable
                       key={player.id}
                       draggableId={player.id.toString()}
@@ -162,9 +162,10 @@ function Ranking() {
                         <PlayerItem
                           ref={provided.innerRef}
                           player={player}
-                          draggableProps={provided.draggableProps}
-                          dragHandleProps={provided.dragHandleProps}
-                          index={index + 1}
+                          index={availablePlayers.findIndex(p => p.id === player.id) + 1}
+                          positionalRank={player.positionRank}
+                          draggableProps={provided.draggableProps}   // for internal drag
+                          dragHandleProps={provided.dragHandleProps} // only handle
                         />
                       )}
                     </Draggable>
