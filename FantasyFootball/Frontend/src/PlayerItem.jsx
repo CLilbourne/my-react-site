@@ -1,17 +1,16 @@
 import React from "react";
 import "./Draft.css";
-import { positionColors } from "./playerData";
+import {positionColors} from "./playerData";
 import { GripVertical } from "lucide-react"; // ✅ simple drag icon
 
-function PlayerItem({ player, index, primaryButton, secondaryButton, status, dragHandleProps }) {
-  let background = "rgb(28, 43, 70)";
+function PlayerItem({ player, index, primaryButton, secondaryButton, status }){
+  let background = "rgb(28, 43, 70)"
   if (status === "gone") background = "#ff5353ff"; // light red
   if (status === "got") background = "#5bfa5bff"; // light green
-
   return (
     <li
       className="player-card"
-      style={{ display: "flex", alignItems: "center", background }}
+      style={{ display: "flex", alignItems: "center", background}}
     >
       {/* Drag Handle */}
       <span
@@ -25,8 +24,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
       >
         <GripVertical size={18} color="#ccc" />
       </span>
-
-      {/* Global rank number */}
+      {/* Global rank number before the photo */}
       {typeof index === "number" && (
         <span
           style={{
@@ -40,13 +38,9 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
       )}
 
       {/* Player headshot */}
-      <img
-        src={player.headshot}
-        alt={player.fullName}
-        style={{ width: 40, height: 40, borderRadius: "50%", marginRight: 8 }}
-      />
+      <img src={player.headshot} alt={player.fullName} />
 
-      <div style={{ flex: 1 }}>
+      <div>
         {/* Player Name */}
         <span style={{ fontWeight: "bold" }}>{player.fullName}</span>{" "}
         <span style={{ color: "#bbb", fontSize: "0.9em" }}>
@@ -55,10 +49,8 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
         <br />
         {/* ✅ Position-specific ranking (ex: WR3, RB7) */}
         {player.positionRank && (
-          <span
-            style={{
-              color:
-                positionColors[player.position.toLowerCase()] || "#29354e",
+          <span style={{
+              color: positionColors[player.position.toLowerCase()] || "#29354e",
               fontSize: "0.85em",
               fontWeight: "bold",
             }}
