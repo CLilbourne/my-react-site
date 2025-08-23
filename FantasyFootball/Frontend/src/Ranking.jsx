@@ -17,8 +17,7 @@ function Ranking() {
   const [availablePlayers, setAvailablePlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPos, setFilterPos] = useState("ALL");
-  const [rankings, setRankings] = useState(players);
-  
+
   // check username
   useEffect(() => {
     if (!username) {
