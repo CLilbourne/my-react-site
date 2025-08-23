@@ -3,7 +3,7 @@ import "./Draft.css";
 import {positionColors} from "./playerData";
 import { GripVertical } from "lucide-react"; // ✅ simple drag icon
 
-function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra}){
+function PlayerItem({ player, index, primaryButton, secondaryButton, status, dragHandleProps}){
   let background = "rgb(28, 43, 70)"
   if (status === "gone") background = "#ff5353ff"; // light red
   if (status === "got") background = "#5bfa5bff"; // light green
