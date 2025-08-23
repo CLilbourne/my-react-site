@@ -109,16 +109,6 @@ function Ranking() {
       return newPlayers;
     });
   };
-  
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const items = Array.from(rankings);
-    const [reordered] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reordered);
-
-    setRankings(items);
-  };
 
   // ✅ Compute positional ranks dynamically
   const getPlayersWithPositionalRanks = () => {
