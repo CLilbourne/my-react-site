@@ -159,31 +159,14 @@ function Ranking() {
                       index={index}
                     >
                       {(provided, snapshot) => (
-                        <li
+                        <PlayerItem
                           ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps} // ✅ drag handle
-                          style={{
-                            ...provided.draggableProps.style,
-                            listStyle: "none",
-                            marginBottom: "8px",
-                            background: snapshot.isDragging
-                              ? "#f0f0f0"
-                              : "white",
-                            borderRadius: "8px",
-                            padding: "8px",
-                          }}
-                        >
-                          <PlayerItem
-                            player={player}
-                            index={
-                              availablePlayers.findIndex(
-                                (p) => p.id === player.id
-                              ) + 1
-                            }
-                            positionalRank={player.positionRank}
-                          />
-                        </li>
+                          player={player}
+                          index={availablePlayers.findIndex(p => p.id === player.id) + 1}
+                          positionalRank={player.positionRank}
+                          draggableProps={provided.draggableProps}   // for internal drag
+                          dragHandleProps={provided.dragHandleProps} // only handle
+                        />
                       )}
                     </Draggable>
                   ))}
@@ -192,6 +175,7 @@ function Ranking() {
               )}
             </Droppable>
           </DragDropContext>
+
         </div>
       </div>
     </div>
