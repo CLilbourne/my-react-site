@@ -10,7 +10,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
   return (
     <li
       className="player-card"
-      style={{ display: "flex", alignItems: "center", background}}
+      style={{ display: "flex", alignItems: "left", background}}
     >
       {/* Drag Handle */}
       <span
@@ -29,7 +29,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
           style={{
             width: "30px",
             fontWeight: "bold",
-            textAlign: "center",
+            textAlign: "left",
           }}
         >
           {index}.
