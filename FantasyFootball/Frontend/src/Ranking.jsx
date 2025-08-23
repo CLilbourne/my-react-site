@@ -4,7 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
-import "./DraftRoom.css"; // reuse same styling for search/filter
+import "./DraftRoom.css";
+
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 function Ranking() {
   const location = useLocation();
@@ -80,38 +82,9 @@ function Ranking() {
     }).catch((err) => console.error("Error saving rankings:", err));
   };
 
-  // Move functions with save after update
-  const movePlayerUp = (player) => {
-    setAvailablePlayers((prevPlayers) => {
-      const index = prevPlayers.findIndex((p) => p.id === player.id);
-      if (index <= 0) return prevPlayers;
-      const newPlayers = [...prevPlayers];
-      [newPlayers[index - 1], newPlayers[index]] = [
-        newPlayers[index],
-        newPlayers[index - 1],
-      ];
-      saveRankings(newPlayers);
-      return newPlayers;
-    });
-  };
-
-  const movePlayerDown = (player) => {
-    setAvailablePlayers((prevPlayers) => {
-      const index = prevPlayers.findIndex((p) => p.id === player.id);
-      if (index >= prevPlayers.length - 1) return prevPlayers;
-      const newPlayers = [...prevPlayers];
-      [newPlayers[index + 1], newPlayers[index]] = [
-        newPlayers[index],
-        newPlayers[index + 1],
-      ];
-      saveRankings(newPlayers);
-      return newPlayers;
-    });
-  };
-
   // ✅ Compute positional ranks dynamically
   const getPlayersWithPositionalRanks = () => {
-    const positionCounters = {}; // e.g. { WR: 1, RB: 1 }
+    const positionCounters = {};
     return availablePlayers.map((player) => {
       const pos = player.position;
       if (!positionCounters[pos]) positionCounters[pos] = 1;
@@ -120,7 +93,7 @@ function Ranking() {
     });
   };
 
-  // ✅ Filtering logic (same as DraftRoom)
+  // ✅ Filtering logic
   const filteredPlayers = getPlayersWithPositionalRanks().filter((p) => {
     const matchesSearch = p.fullName
       .toLowerCase()
@@ -129,11 +102,41 @@ function Ranking() {
     return matchesSearch && matchesPos;
   });
 
+  // ✅ Drag end handler
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const from = result.source.index;
+    const to = result.destination.index;
+
+    const visibleIds = filteredPlayers.map((p) => p.id);
+    const vis = Array.from(visibleIds);
+    const [movedId] = vis.splice(from, 1);
+    vis.splice(to, 0, movedId);
+
+    setAvailablePlayers((prev) => {
+      const idToPlayer = new Map(prev.map((p) => [p.id, p]));
+      const visSet = new Set(vis);
+      let visCursor = 0;
+
+      const merged = prev.map((p) => {
+        if (visSet.has(p.id)) {
+          const nextId = vis[visCursor++];
+          return idToPlayer.get(nextId);
+        }
+        return p;
+      });
+
+      saveRankings(merged);
+      return merged;
+    });
+  };
+
   return (
     <div>
       <h1>{username}'s Player Rankings</h1>
 
-      {/* Search + Filter Controls (reused from DraftRoom) */}
+      {/* Search + Filter Controls */}
       <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
         <input
           type="text"
@@ -156,30 +159,58 @@ function Ranking() {
         </select>
       </div>
 
+      {/* Drag & Drop Ranking List */}
       <div style={{ display: "flex", gap: 40 }}>
-        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8}}>
+        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8 }}>
           {filteredPlayers.length === 0 && <p>No players found...</p>}
 
-          <ul style={{ overflowY: "auto", padding: 0 }}>
-            {filteredPlayers.map((player, index) => (
-              <PlayerItem
-                key={player.id}
-                player={player}
-                // ✅ find the player's position in the full list (not just filtered)
-                index={availablePlayers.findIndex((p) => p.id === player.id) + 1}
-                positionalRank={player.positionRank}
-                primaryButton={{
-                  label: "Up",
-                  onClick: () => movePlayerUp(player),
-                }}
-                secondaryButton={{
-                  label: "Down",
-                  onClick: () => movePlayerDown(player),
-                }}
-              />
-
-            ))}
-          </ul>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="players" direction="vertical">
+              {(provided) => (
+                <ul
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={{ padding: 0, listStyle: "none" }}
+                >
+                  {filteredPlayers.map((player, index) => (
+                    <Draggable
+                      key={player.id}
+                      draggableId={String(player.id)}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          style={{
+                            marginBottom: 8,
+                            background: "#f9f9f9",
+                            borderRadius: 8,
+                            boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                            userSelect: "none",
+                            transition: "transform 150ms ease",
+                            ...provided.draggableProps.style,
+                          }}
+                        >
+                          <PlayerItem
+                            player={player}
+                            index={
+                              availablePlayers.findIndex(
+                                (p) => p.id === player.id
+                              ) + 1
+                            }
+                            positionalRank={player.positionRank}
+                            dragHandleProps={provided.dragHandleProps} // 👈 pass handle down
+                          />
+                        </li>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </ul>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
       </div>
     </div>
