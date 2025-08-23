@@ -13,7 +13,7 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
       style={{ display: "flex", alignItems: "center", background}}
     >
        {/* Drag Handle */}
-      {typeof dragHandleProps === 1 && (
+      {typeof dragHandleProps === "number" && (
         <span
         {...dragHandleProps}
         style={{
