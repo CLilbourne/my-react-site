@@ -13,18 +13,20 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
       style={{ display: "flex", alignItems: "center", background}}
     >
        {/* Drag Handle */}
-      
-        <span
-        {...dragHandleProps}
-        style={{
-          cursor: "grab",
-          display: "flex",
-          alignItems: "center",
-          padding: "0 8px",
-        }}
-      >
-        <GripVertical size={18} color="#ccc" />
-      </span>
+        {dragHandleProps && (
+          <span
+            {...dragHandleProps}
+            style={{
+              cursor: "grab",
+              display: "flex",
+              alignItems: "center",
+              padding: "0 8px",
+            }}
+          >
+            <GripVertical size={18} color="#ccc" />
+          </span>
+        )}
+
 
       {/* Global rank number before the photo */}
       {typeof index === "number" && (
