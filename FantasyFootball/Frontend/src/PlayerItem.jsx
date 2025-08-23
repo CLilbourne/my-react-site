@@ -3,7 +3,7 @@ import "./Draft.css";
 import {positionColors} from "./playerData";
 import { GripVertical } from "lucide-react"; // ✅ simple drag icon
 
-function PlayerItem({ player, index, primaryButton, secondaryButton, status, dragHandleProps}){
+function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra}){
   let background = "rgb(28, 43, 70)"
   if (status === "gone") background = "#ff5353ff"; // light red
   if (status === "got") background = "#5bfa5bff"; // light green
@@ -17,13 +17,12 @@ function PlayerItem({ player, index, primaryButton, secondaryButton, status, dra
         {...dragHandleProps}
         style={{
           cursor: "grab",
-          display: "flex",
-          alignItems: "center",
           padding: "0 8px",
         }}
       >
         <GripVertical size={18} color="#ccc" />
       </span>
+
       {/* Global rank number before the photo */}
       {typeof index === "number" && (
         <span
