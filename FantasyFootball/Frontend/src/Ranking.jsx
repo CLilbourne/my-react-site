@@ -4,13 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import adpData from "./assets/adp.json";
 import { BACKEND_URL } from "./shared";
 import normalizeName from "./helpers";
-import "./DraftRoom.css";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import "./DraftRoom.css"; // reuse same styling for search/filter
 
 function Ranking() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // ✅ get username from state OR localStorage
   const username =
     location.state?.username || JSON.parse(localStorage.getItem("user"))?.name;
 
@@ -18,11 +18,15 @@ function Ranking() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPos, setFilterPos] = useState("ALL");
 
+  // check username
   useEffect(() => {
-    if (!username) navigate("/login", { replace: true });
+    if (!username) {
+      navigate("/login", { replace: true });
+    }
   }, [username, navigate]);
   if (!username) return null;
 
+  // ✅ Load players, then fetch saved rankings if any
   useEffect(() => {
     async function fetchPlayers() {
       try {
@@ -43,6 +47,7 @@ function Ranking() {
 
         merged.sort((a, b) => a.adp - b.adp);
 
+        // ✅ fetch saved rankings from backend
         const savedRes = await fetch(`${BACKEND_URL}/getRankings/${username}`);
         const savedRankings = await savedRes.json();
 
@@ -50,7 +55,9 @@ function Ranking() {
           const rankedPlayers = savedRankings
             .map((id) => merged.find((p) => p.id === id))
             .filter(Boolean);
-          const remaining = merged.filter((p) => !savedRankings.includes(p.id));
+          const remaining = merged.filter(
+            (p) => !savedRankings.includes(p.id)
+          );
           setAvailablePlayers([...rankedPlayers, ...remaining]);
         } else {
           setAvailablePlayers(merged);
@@ -59,9 +66,11 @@ function Ranking() {
         console.error("Error fetching players:", err);
       }
     }
+
     fetchPlayers();
   }, [username]);
 
+  // ✅ Save rankings helper
   const saveRankings = (newPlayers) => {
     const rankings = newPlayers.map((p) => p.id);
     fetch(`${BACKEND_URL}/saveRankings`, {
@@ -71,17 +80,38 @@ function Ranking() {
     }).catch((err) => console.error("Error saving rankings:", err));
   };
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const newPlayers = Array.from(availablePlayers);
-    const [reordered] = newPlayers.splice(result.source.index, 1);
-    newPlayers.splice(result.destination.index, 0, reordered);
-    setAvailablePlayers(newPlayers);
-    saveRankings(newPlayers);
+  // Move functions with save after update
+  const movePlayerUp = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index <= 0) return prevPlayers;
+      const newPlayers = [...prevPlayers];
+      [newPlayers[index - 1], newPlayers[index]] = [
+        newPlayers[index],
+        newPlayers[index - 1],
+      ];
+      saveRankings(newPlayers);
+      return newPlayers;
+    });
   };
 
+  const movePlayerDown = (player) => {
+    setAvailablePlayers((prevPlayers) => {
+      const index = prevPlayers.findIndex((p) => p.id === player.id);
+      if (index >= prevPlayers.length - 1) return prevPlayers;
+      const newPlayers = [...prevPlayers];
+      [newPlayers[index + 1], newPlayers[index]] = [
+        newPlayers[index],
+        newPlayers[index + 1],
+      ];
+      saveRankings(newPlayers);
+      return newPlayers;
+    });
+  };
+
+  // ✅ Compute positional ranks dynamically
   const getPlayersWithPositionalRanks = () => {
-    const positionCounters = {};
+    const positionCounters = {}; // e.g. { WR: 1, RB: 1 }
     return availablePlayers.map((player) => {
       const pos = player.position;
       if (!positionCounters[pos]) positionCounters[pos] = 1;
@@ -90,8 +120,11 @@ function Ranking() {
     });
   };
 
+  // ✅ Filtering logic (same as DraftRoom)
   const filteredPlayers = getPlayersWithPositionalRanks().filter((p) => {
-    const matchesSearch = p.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = p.fullName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
     const matchesPos = filterPos === "ALL" || p.position === filterPos;
     return matchesSearch && matchesPos;
   });
@@ -100,6 +133,7 @@ function Ranking() {
     <div>
       <h1>{username}'s Player Rankings</h1>
 
+      {/* Search + Filter Controls (reused from DraftRoom) */}
       <div style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
         <input
           type="text"
@@ -108,6 +142,7 @@ function Ranking() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
+
         <select
           className="position-select"
           value={filterPos}
@@ -121,43 +156,32 @@ function Ranking() {
         </select>
       </div>
 
-      <div className="draftPlayers" style={{ flex: 1, paddingTop: 8 }}>
-        {filteredPlayers.length === 0 && <p>No players found...</p>}
+      <div style={{ display: "flex", gap: 40 }}>
+        <div className="draftPlayers" style={{ flex: 1, paddingTop: 8}}>
+          {filteredPlayers.length === 0 && <p>No players found...</p>}
 
-        <DragDropContext onDragEnd={handleOnDragEnd}>
-          <Droppable droppableId="players">
-            {(provided) => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                style={{ padding: 0 }}
-              >
-                {filteredPlayers.map((player, index) => (
-                  <Draggable
-                    key={player.id}
-                    draggableId={player.id.toString()}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <PlayerItem
-                        player={player}
-                        index={availablePlayers.findIndex((p) => p.id === player.id) + 1}
-                        positionalRank={player.positionRank}
-                        dragHandleProps={provided.dragHandleProps} // ✅ only this small handle is draggable
-                        ref={provided.innerRef}
-                        style={{
-                          ...provided.draggableProps.style,
-                          marginBottom: "8px",
-                        }}
-                      />
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
+          <ul style={{ overflowY: "auto", padding: 0 }}>
+            {filteredPlayers.map((player, index) => (
+              <PlayerItem
+                dragHandleProps= {1}
+                key={player.id}
+                player={player}
+                // ✅ find the player's position in the full list (not just filtered)
+                index={availablePlayers.findIndex((p) => p.id === player.id) + 1}
+                positionalRank={player.positionRank}
+                primaryButton={{
+                  label: "Up",
+                  onClick: () => movePlayerUp(player),
+                }}
+                secondaryButton={{
+                  label: "Down",
+                  onClick: () => movePlayerDown(player),
+                }}
+              />
+
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
