@@ -160,7 +160,7 @@ function Ranking() {
       </div>
 
       {/* Drag & Drop Ranking List */}
-      <div style={{ display: "flex", gap: 40 }}>
+      <div>
         <div className="draftPlayers" style={{ flex: 1, paddingTop: 8 }}>
           {filteredPlayers.length === 0 && <p>No players found...</p>}
 
