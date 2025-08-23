@@ -163,7 +163,7 @@ function Ranking() {
           <ul style={{ overflowY: "auto", padding: 0 }}>
             {filteredPlayers.map((player, index) => (
               <PlayerItem
-                dragHandleProps= {true}
+                dragHandleProps= {1}
                 key={player.id}
                 player={player}
                 // ✅ find the player's position in the full list (not just filtered)
